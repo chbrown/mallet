@@ -51,65 +51,65 @@ import cc.mallet.util.CommandOption;
  * yield different classifiers, you probably want a ClassifierTrainer.Factory. */
 public abstract class ClassifierTrainer<C extends Classifier>
 {
-	protected InstanceList validationSet;
-	protected boolean finishedTraining = false;
-	
-	public boolean isFinishedTraining() { return finishedTraining; } // Careful to set this properly in subclasses!  Consider removing -akm 1/08
-	public abstract C getClassifier();
-	public abstract C train (InstanceList trainingSet);  
-	public void setValidationInstances (InstanceList validationSet) { this.validationSet = validationSet; }
-	public InstanceList getValidationInstances () { return this.validationSet; }
-	
-	/* No, it is fine if these can be set in the constructor only.  
-	 * Individual ClassifierTrainer subclasses could provide this interface if desired. 
-	public C setInitialClassifier (C initialClassifier) { return null; }
-	public C getInitialClassifier () { return null; } 
-	*/
-	
-		
-	public interface ByOptimization<C extends Classifier> {
-		public C train (InstanceList trainingSet, int numIterations);
-		public Optimizer getOptimizer ();	
-		public abstract int getIteration();
-	}
-	
-	/** For active learning, in which this trainer will select certain instances and 
-	 * request that the Labeler instance label them. 
-	 * @param trainingAndUnlabeledSet the instances on which to train; some may be labeled; unlabeled ones may have their label requested from the labeler.
-	 * @param labeler  
-	 * @param numLabelRequests the number of times to call labeler.label(). */
-	public interface ByActiveLearning<C extends Classifier> {
-		public C train (InstanceList trainingAndUnlabeledSet, Labeler labeler, int numLabelRequests);
-	}
+  protected InstanceList validationSet;
+  protected boolean finishedTraining = false;
+  
+  public boolean isFinishedTraining() { return finishedTraining; } // Careful to set this properly in subclasses!  Consider removing -akm 1/08
+  public abstract C getClassifier();
+  public abstract C train (InstanceList trainingSet);  
+  public void setValidationInstances (InstanceList validationSet) { this.validationSet = validationSet; }
+  public InstanceList getValidationInstances () { return this.validationSet; }
+  
+  /* No, it is fine if these can be set in the constructor only.  
+   * Individual ClassifierTrainer subclasses could provide this interface if desired. 
+  public C setInitialClassifier (C initialClassifier) { return null; }
+  public C getInitialClassifier () { return null; } 
+  */
+  
+    
+  public interface ByOptimization<C extends Classifier> {
+    public C train (InstanceList trainingSet, int numIterations);
+    public Optimizer getOptimizer (); 
+    public abstract int getIteration();
+  }
+  
+  /** For active learning, in which this trainer will select certain instances and 
+   * request that the Labeler instance label them. 
+   * @param trainingAndUnlabeledSet the instances on which to train; some may be labeled; unlabeled ones may have their label requested from the labeler.
+   * @param labeler  
+   * @param numLabelRequests the number of times to call labeler.label(). */
+  public interface ByActiveLearning<C extends Classifier> {
+    public C train (InstanceList trainingAndUnlabeledSet, Labeler labeler, int numLabelRequests);
+  }
 
-	/** For various kinds of online learning by batches, where training instances are presented,
-	 * consumed for learning immediately.  The same instances may be presented more than once to 
-	 * this interface.  For example, StochasticGradient, etc conforms to this interface. */
-	public interface ByIncrements<C extends Classifier> {
-		public C trainIncremental (InstanceList trainingInstancesToAdd);
-	}
-	
-	/** For online learning that can operate on one instance at a time.  For example, Perceptron. */
-	public interface ByInstanceIncrements<C extends Classifier> extends ByIncrements<C> {
-		public C trainIncremental (Instance instanceToAdd);
-	}
+  /** For various kinds of online learning by batches, where training instances are presented,
+   * consumed for learning immediately.  The same instances may be presented more than once to 
+   * this interface.  For example, StochasticGradient, etc conforms to this interface. */
+  public interface ByIncrements<C extends Classifier> {
+    public C trainIncremental (InstanceList trainingInstancesToAdd);
+  }
+  
+  /** For online learning that can operate on one instance at a time.  For example, Perceptron. */
+  public interface ByInstanceIncrements<C extends Classifier> extends ByIncrements<C> {
+    public C trainIncremental (Instance instanceToAdd);
+  }
 
-	/** Instances of a Factory know how to create new ClassifierTrainers to apply to new Classifiers. */
-	public static abstract class Factory<CT extends ClassifierTrainer<? extends Classifier>>
-	{
-		// This is recommended (but cannot be enforced in Java) that subclasses implement
-		// public static Classifier train (InstanceList trainingSet)
-		// public static Classifier train (InstanceList trainingSet, InstanceList validationSet)
-		// public static Classifier train (InstanceList trainingSet, InstanceList validationSet, Classifier initialClassifier)
-		// which call 
-		
-		public abstract CT newClassifierTrainer (Classifier initialClassifier);
-		public CT newClassifierTrainer () { return newClassifierTrainer (null); }
-				
-		public String toString() {
-			return this.getClass().getName();
-		}
+  /** Instances of a Factory know how to create new ClassifierTrainers to apply to new Classifiers. */
+  public static abstract class Factory<CT extends ClassifierTrainer<? extends Classifier>>
+  {
+    // This is recommended (but cannot be enforced in Java) that subclasses implement
+    // public static Classifier train (InstanceList trainingSet)
+    // public static Classifier train (InstanceList trainingSet, InstanceList validationSet)
+    // public static Classifier train (InstanceList trainingSet, InstanceList validationSet, Classifier initialClassifier)
+    // which call 
+    
+    public abstract CT newClassifierTrainer (Classifier initialClassifier);
+    public CT newClassifierTrainer () { return newClassifierTrainer (null); }
+        
+    public String toString() {
+      return this.getClass().getName();
+    }
 
-	}
+  }
 
 }

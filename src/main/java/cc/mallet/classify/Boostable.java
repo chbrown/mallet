@@ -15,7 +15,7 @@
 package cc.mallet.classify;
 
 /** This interface is a tag indicating that the classifier attends to the
-		InstanceList.getInstanceWeight() weights when training. */
+    InstanceList.getInstanceWeight() weights when training. */
 
 public interface Boostable
 {

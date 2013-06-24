@@ -83,7 +83,7 @@ public class CRFExtractor implements Extractor {
       return extract ((Tokenization) o);
     } 
     else if (o instanceof InstanceList) {
-    	return extract ((InstanceList) o);
+      return extract ((InstanceList) o);
     }
     else  {
       return extract (doTokenize (o));
@@ -124,25 +124,25 @@ public class CRFExtractor implements Extractor {
     return piped;
   }
 
-	/** Assumes Instance.source contains the Tokenization object. */
-	public Extraction extract (InstanceList ilist) {
+  /** Assumes Instance.source contains the Tokenization object. */
+  public Extraction extract (InstanceList ilist) {
     Extraction extraction = new Extraction (this, getTargetAlphabet ());
-		for (int i = 0; i < ilist.size(); i++) {
-			Instance inst = ilist.get(i);
-			Tokenization tok = (Tokenization)inst.getSource();
+    for (int i = 0; i < ilist.size(); i++) {
+      Instance inst = ilist.get(i);
+      Tokenization tok = (Tokenization)inst.getSource();
       String name = inst.getName().toString();
       Sequence input = (Sequence)inst.getData ();
       Sequence target = (Sequence)inst.getTarget ();
       Sequence output = crf.transduce(input);
       DocumentExtraction docseq =
-				new DocumentExtraction (name, getTargetAlphabet(), tok,
-																output, target, backgroundTag,
-																filter);
-      extraction.addDocumentExtraction (docseq);			
-		}
+        new DocumentExtraction (name, getTargetAlphabet(), tok,
+                                output, target, backgroundTag,
+                                filter);
+      extraction.addDocumentExtraction (docseq);      
+    }
     return extraction;
-	}
-	
+  }
+  
   public Extraction extract (Iterator<Instance> source)
   {
     Extraction extraction = new Extraction (this, getTargetAlphabet ());
@@ -175,7 +175,7 @@ public class CRFExtractor implements Extractor {
   {
     return filter;
   }
-	
+  
   public String getBackgroundTag ()
   {
     return backgroundTag;
@@ -239,7 +239,7 @@ public class CRFExtractor implements Extractor {
       //sp.removePipe (0); TODO Fix this
     }
     //setTokenizationPipe (sp);  TODO Fix this
-  	throw new UnsupportedOperationException ("Not yet implemented...");
+    throw new UnsupportedOperationException ("Not yet implemented...");
   }
 
   // Java serialization nonsense

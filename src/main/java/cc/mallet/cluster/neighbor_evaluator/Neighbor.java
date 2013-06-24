@@ -17,49 +17,49 @@ import cc.mallet.types.Alphabet;
  */
 public class Neighbor implements Serializable {
 
-	Clustering original;
-	Clustering modified;
+  Clustering original;
+  Clustering modified;
 
-	Alphabet alphabet;
-	
-	public Neighbor(Clustering original, Clustering modified) {
-		this.original = original;
-		this.modified = modified;
-	}
+  Alphabet alphabet;
+  
+  public Neighbor(Clustering original, Clustering modified) {
+    this.original = original;
+    this.modified = modified;
+  }
 
-	/**
-	 * 
-	 * @return The original Clustering.
-	 */
-	public Clustering getOriginal() {
-		return original;
-	}
+  /**
+   * 
+   * @return The original Clustering.
+   */
+  public Clustering getOriginal() {
+    return original;
+  }
 
-	/**
-	 * 
-	 * @return The modified Clustering.
-	 */
-	public Clustering getModified() {
-		return modified;
-	}
+  /**
+   * 
+   * @return The modified Clustering.
+   */
+  public Clustering getModified() {
+    return modified;
+  }
 
-	public String toString() {
-		return "original=" + original + "\nmodified=" + modified;
-	}
+  public String toString() {
+    return "original=" + original + "\nmodified=" + modified;
+  }
 
-	// SERIALIZATION
+  // SERIALIZATION
 
-	private static final long serialVersionUID = 1;
-	private static final int CURRENT_SERIAL_VERSION = 1;
+  private static final long serialVersionUID = 1;
+  private static final int CURRENT_SERIAL_VERSION = 1;
 
-	private void writeObject(ObjectOutputStream out) throws IOException {
-		out.defaultWriteObject();
-		out.writeInt(CURRENT_SERIAL_VERSION);
-	}
+  private void writeObject(ObjectOutputStream out) throws IOException {
+    out.defaultWriteObject();
+    out.writeInt(CURRENT_SERIAL_VERSION);
+  }
 
-	private void readObject(ObjectInputStream in) throws IOException,
-			ClassNotFoundException {
-		in.defaultReadObject();
-		int version = in.readInt();
-	}
+  private void readObject(ObjectInputStream in) throws IOException,
+      ClassNotFoundException {
+    in.defaultReadObject();
+    int version = in.readInt();
+  }
 }

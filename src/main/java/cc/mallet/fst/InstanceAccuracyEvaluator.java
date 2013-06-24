@@ -28,7 +28,7 @@ public class InstanceAccuracyEvaluator extends TransducerEvaluator {
   
   private static final Logger logger = MalletLogger.getLogger (InstanceAccuracyEvaluator.class.getName());
 
-	private HashMap<String,Double> accuracy = new HashMap<String,Double>();
+  private HashMap<String,Double> accuracy = new HashMap<String,Double>();
   
   public void evaluateInstanceList (TransducerTrainer tt, InstanceList data, String description)
   {
@@ -44,13 +44,13 @@ public class InstanceAccuracyEvaluator extends TransducerEvaluator {
         correct++;
       }
     double acc = ((double)correct) / data.size();
-		accuracy.put(description, acc);
+    accuracy.put(description, acc);
 
     logger.info (description+" Num instances = "+data.size()+"  Num correct = "+correct+" Per-instance accuracy = "+acc);
   }
   
   public double getAccuracy(String description) {
-	  return accuracy.get(description).doubleValue();
+    return accuracy.get(description).doubleValue();
   }
 
   private boolean sequencesMatch (Sequence trueOutput, Sequence predOutput)

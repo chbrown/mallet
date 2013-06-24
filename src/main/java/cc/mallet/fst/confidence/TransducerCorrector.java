@@ -6,7 +6,7 @@
    information, see the file `LICENSE' included with this distribution. */
 
 /** 
-		@author Aron Culotta <a href="mailto:culotta@cs.umass.edu">culotta@cs.umass.edu</a>
+    @author Aron Culotta <a href="mailto:culotta@cs.umass.edu">culotta@cs.umass.edu</a>
 */
 
 package cc.mallet.fst.confidence;
@@ -26,7 +26,7 @@ import cc.mallet.types.*;
  */
 public interface TransducerCorrector 
 {
-		
-	public ArrayList correctLeastConfidentSegments (InstanceList ilist, Object[] startTags,
-																										Object[] continueTags);
+    
+  public ArrayList correctLeastConfidentSegments (InstanceList ilist, Object[] startTags,
+                                                    Object[] continueTags);
 }

@@ -16,18 +16,18 @@ import cc.mallet.types.Instance;
  * @see InstanceIterator
  */
 public abstract class NeighborIterator implements Iterator<Instance> {
-	protected Clustering clustering;
+  protected Clustering clustering;
 
-	/**
-	 *
-	 * @param clustering A true Clustering.
-	 * @return
-	 */
-	public NeighborIterator (Clustering clustering) {
-		this.clustering = clustering;
-	}
+  /**
+   *
+   * @param clustering A true Clustering.
+   * @return
+   */
+  public NeighborIterator (Clustering clustering) {
+    this.clustering = clustering;
+  }
 
-	protected Clustering getClustering () { return clustering; }
-	
-	public void remove () { throw new IllegalStateException ("This Iterator<Instance> does not support remove()."); }
+  protected Clustering getClustering () { return clustering; }
+  
+  public void remove () { throw new IllegalStateException ("This Iterator<Instance> does not support remove()."); }
 }

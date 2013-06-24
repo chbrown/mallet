@@ -21,25 +21,25 @@ import cc.mallet.types.InstanceList;
  * @author Jerod Weinman <A HREF="mailto:weinman@cs.umass.edu">weinman@cs.umass.edu</A>
  */
 public abstract class Clusterer implements Serializable {
-	
-	Pipe instancePipe;
-	
-	/**
-	 * Creates a new <code>Clusterer</code> instance.
-	 *
-	 * @param instancePipe Pipe that created the InstanceList to be
-	 * clustered.
-	 */
-	public Clusterer(Pipe instancePipe) {
-		this.instancePipe = instancePipe;
-	}
-	
-	/** Return a clustering of an InstanceList */
-	public abstract Clustering cluster (InstanceList trainingSet);
+  
+  Pipe instancePipe;
+  
+  /**
+   * Creates a new <code>Clusterer</code> instance.
+   *
+   * @param instancePipe Pipe that created the InstanceList to be
+   * clustered.
+   */
+  public Clusterer(Pipe instancePipe) {
+    this.instancePipe = instancePipe;
+  }
+  
+  /** Return a clustering of an InstanceList */
+  public abstract Clustering cluster (InstanceList trainingSet);
 
-	public Pipe getPipe () { return instancePipe; }
-	
-	// SERIALIZATION
+  public Pipe getPipe () { return instancePipe; }
+  
+  // SERIALIZATION
 
   private static final long serialVersionUID = 1;
   private static final int CURRENT_SERIAL_VERSION = 1;
@@ -52,5 +52,5 @@ public abstract class Clusterer implements Serializable {
   private void readObject (ObjectInputStream in) throws IOException, ClassNotFoundException {
     in.defaultReadObject ();
     int version = in.readInt ();
-  }	
+  } 
 }

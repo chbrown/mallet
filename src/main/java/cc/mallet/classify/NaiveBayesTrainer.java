@@ -81,33 +81,33 @@ implements ClassifierTrainer.ByInstanceIncrements<NaiveBayes>, Boostable, Alphab
   
   
   public NaiveBayesTrainer (NaiveBayes initialClassifier) {
-  	if (initialClassifier != null) {
-  		this.instancePipe = initialClassifier.getInstancePipe();
-  		this.dataAlphabet = initialClassifier.getAlphabet();
-  		this.targetAlphabet = initialClassifier.getLabelAlphabet();
-  		this.classifier = initialClassifier;
-  	}
+    if (initialClassifier != null) {
+      this.instancePipe = initialClassifier.getInstancePipe();
+      this.dataAlphabet = initialClassifier.getAlphabet();
+      this.targetAlphabet = initialClassifier.getLabelAlphabet();
+      this.classifier = initialClassifier;
+    }
   }
   
   public NaiveBayesTrainer (Pipe instancePipe) {
-  	this.instancePipe = instancePipe;
-  	this.dataAlphabet = instancePipe.getDataAlphabet();
-  	this.targetAlphabet = instancePipe.getTargetAlphabet();
+    this.instancePipe = instancePipe;
+    this.dataAlphabet = instancePipe.getDataAlphabet();
+    this.targetAlphabet = instancePipe.getTargetAlphabet();
   }
   
   public NaiveBayesTrainer () {
   }
   
   
-	public NaiveBayes getClassifier () { return classifier; }
+  public NaiveBayes getClassifier () { return classifier; }
 
   public NaiveBayesTrainer setDocLengthNormalization (double d) {
-  	docLengthNormalization = d;
-  	return this;
+    docLengthNormalization = d;
+    return this;
   }
   
   public double getDocLengthNormalization () {
-  	return docLengthNormalization;
+    return docLengthNormalization;
   }
   
   /**
@@ -187,21 +187,21 @@ implements ClassifierTrainer.ByInstanceIncrements<NaiveBayes>, Boostable, Alphab
    */
   public NaiveBayes train (InstanceList trainingList)
   {
-  	// Forget all the previous sufficient statistics counts;
-  	me = null; pe = null;
-  	// Train a new classifier based on this data
-  	this.classifier = trainIncremental (trainingList);
-  	return classifier;
+    // Forget all the previous sufficient statistics counts;
+    me = null; pe = null;
+    // Train a new classifier based on this data
+    this.classifier = trainIncremental (trainingList);
+    return classifier;
   }
   
   public NaiveBayes trainIncremental (InstanceList trainingInstancesToAdd) 
   {
-  	// Initialize and check instance variables as necessary...
-  	setup(trainingInstancesToAdd, null);
+    // Initialize and check instance variables as necessary...
+    setup(trainingInstancesToAdd, null);
 
-  	// Incrementally add the counts of this new training data
-  	for (Instance instance : trainingInstancesToAdd)
-    	incorporateOneInstance(instance, trainingInstancesToAdd.getInstanceWeight(instance));
+    // Incrementally add the counts of this new training data
+    for (Instance instance : trainingInstancesToAdd)
+      incorporateOneInstance(instance, trainingInstancesToAdd.getInstanceWeight(instance));
     
     // Estimate multinomials, and return a new naive Bayes classifier.  
     // Note that, unlike MaxEnt, NaiveBayes is immutable, so we create a new one each time.
@@ -210,49 +210,49 @@ implements ClassifierTrainer.ByInstanceIncrements<NaiveBayes>, Boostable, Alphab
   }
   
   public NaiveBayes trainIncremental (Instance instance) {
-  	setup (null, instance);
-  	
-  	// Incrementally add the counts of this new training instance
-  	incorporateOneInstance (instance, 1.0);
-  	if (instancePipe == null)
-  		instancePipe = new Noop (dataAlphabet, targetAlphabet);
-  	classifier = new NaiveBayes (instancePipe, pe.estimate(), estimateFeatureMultinomials());
-  	return classifier;
+    setup (null, instance);
+    
+    // Incrementally add the counts of this new training instance
+    incorporateOneInstance (instance, 1.0);
+    if (instancePipe == null)
+      instancePipe = new Noop (dataAlphabet, targetAlphabet);
+    classifier = new NaiveBayes (instancePipe, pe.estimate(), estimateFeatureMultinomials());
+    return classifier;
   }
 
   
   private void setup (InstanceList instances, Instance instance) {
-  	assert (instances != null || instance != null);
-  	if (instance == null && instances != null)
-  		instance = instances.get(0);
-  	// Initialize the alphabets
-  	if (dataAlphabet == null) {
-  		this.dataAlphabet = instance.getDataAlphabet();
-  		this.targetAlphabet = instance.getTargetAlphabet();
-  	}	else if (!Alphabet.alphabetsMatch(instance, this))
-  		// Make sure the alphabets match 
-  		throw new IllegalArgumentException ("Training set alphabets do not match those of NaiveBayesTrainer.");
+    assert (instances != null || instance != null);
+    if (instance == null && instances != null)
+      instance = instances.get(0);
+    // Initialize the alphabets
+    if (dataAlphabet == null) {
+      this.dataAlphabet = instance.getDataAlphabet();
+      this.targetAlphabet = instance.getTargetAlphabet();
+    } else if (!Alphabet.alphabetsMatch(instance, this))
+      // Make sure the alphabets match 
+      throw new IllegalArgumentException ("Training set alphabets do not match those of NaiveBayesTrainer.");
 
-  	// Initialize or check the instancePipe
-  	if (instances != null) {
-  		if (instancePipe == null)
-  			instancePipe = instances.getPipe();
-  		else if (instancePipe != instances.getPipe())
-  			// Make sure that this pipes match.  Is this really necessary??  
-  			// I don't think so, but it could be confusing to have each returned classifier have a different pipe?  -akm 1/08
-  			throw new IllegalArgumentException ("Training set pipe does not match that of NaiveBayesTrainer.");
-  	}
-  	
-  	if (me == null) {
-  		int numLabels = targetAlphabet.size();
-  		me = new Multinomial.Estimator[numLabels];
-  		for (int i = 0; i < numLabels; i++) {
-  			me[i] = (Multinomial.Estimator) featureEstimator.clone();
-  			me[i].setAlphabet(dataAlphabet);
-  		}
-  		pe = (Multinomial.Estimator) priorEstimator.clone();
-  	}
-  	
+    // Initialize or check the instancePipe
+    if (instances != null) {
+      if (instancePipe == null)
+        instancePipe = instances.getPipe();
+      else if (instancePipe != instances.getPipe())
+        // Make sure that this pipes match.  Is this really necessary??  
+        // I don't think so, but it could be confusing to have each returned classifier have a different pipe?  -akm 1/08
+        throw new IllegalArgumentException ("Training set pipe does not match that of NaiveBayesTrainer.");
+    }
+    
+    if (me == null) {
+      int numLabels = targetAlphabet.size();
+      me = new Multinomial.Estimator[numLabels];
+      for (int i = 0; i < numLabels; i++) {
+        me[i] = (Multinomial.Estimator) featureEstimator.clone();
+        me[i].setAlphabet(dataAlphabet);
+      }
+      pe = (Multinomial.Estimator) priorEstimator.clone();
+    }
+    
     if (targetAlphabet.size() > me.length) {
       // target alphabet grew. increase size of our multinomial array
       int targetAlphabetSize = targetAlphabet.size();
@@ -277,9 +277,9 @@ implements ClassifierTrainer.ByInstanceIncrements<NaiveBayes>, Boostable, Alphab
     double oneNorm = fv.oneNorm();
     if (oneNorm <= 0) return; // Skip instances that have no features present
     if (docLengthNormalization > 0)
-    	// Make the document have counts that sum to docLengthNormalization
-    	// I.e., if 20, it would be as if the document had 20 words.
-    	instanceWeight *= docLengthNormalization / oneNorm;
+      // Make the document have counts that sum to docLengthNormalization
+      // I.e., if 20, it would be as if the document had 20 words.
+      instanceWeight *= docLengthNormalization / oneNorm;
     assert (instanceWeight > 0 && !Double.isInfinite(instanceWeight));
     for (int lpos = 0; lpos < labeling.numLocations(); lpos++) {
       int li = labeling.indexAtLocation (lpos);
@@ -326,17 +326,17 @@ implements ClassifierTrainer.ByInstanceIncrements<NaiveBayes>, Boostable, Alphab
 
   
   // AlphabetCarrying interface
-	public boolean alphabetsMatch(AlphabetCarrying object) {
-		return Alphabet.alphabetsMatch (this, object);
-	}
+  public boolean alphabetsMatch(AlphabetCarrying object) {
+    return Alphabet.alphabetsMatch (this, object);
+  }
 
-	public Alphabet getAlphabet() {
-		return dataAlphabet;
-	}
+  public Alphabet getAlphabet() {
+    return dataAlphabet;
+  }
 
-	public Alphabet[] getAlphabets() {
-		return new Alphabet[] { dataAlphabet, targetAlphabet };
-	}
+  public Alphabet[] getAlphabets() {
+    return new Alphabet[] { dataAlphabet, targetAlphabet };
+  }
 
 
   // Serialization
@@ -392,24 +392,24 @@ implements ClassifierTrainer.ByInstanceIncrements<NaiveBayes>, Boostable, Alphab
     Multinomial.Estimator priorEstimator = new Multinomial.LaplaceEstimator();
     double docLengthNormalization = -1;
     
-		public NaiveBayesTrainer newClassifierTrainer(Classifier initialClassifier) {
-			return new NaiveBayesTrainer ((NaiveBayes)initialClassifier);
-		}
+    public NaiveBayesTrainer newClassifierTrainer(Classifier initialClassifier) {
+      return new NaiveBayesTrainer ((NaiveBayes)initialClassifier);
+    }
     public NaiveBayesTrainer.Factory setDocLengthNormalization (double docLengthNormalization) {
-    	this.docLengthNormalization = docLengthNormalization;
-    	return this;
+      this.docLengthNormalization = docLengthNormalization;
+      return this;
     }
     
     public NaiveBayesTrainer.Factory setFeatureMultinomialEstimator (Multinomial.Estimator featureEstimator) {
-    	this.featureEstimator = featureEstimator;
-    	return this;
+      this.featureEstimator = featureEstimator;
+      return this;
     }
     
     public NaiveBayesTrainer.Factory setPriorMultinomialEstimator (Multinomial.Estimator priorEstimator) {
-    	this.priorEstimator = priorEstimator;
-    	return this;
+      this.priorEstimator = priorEstimator;
+      return this;
     }
-  	
+    
   }
 
 }

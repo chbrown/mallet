@@ -38,8 +38,8 @@ public class CRFOptimizableByEntropyRegularization implements Optimizable.ByGrad
                                                    Serializable {
   private static Logger logger = MalletLogger.getLogger(CRFOptimizableByEntropyRegularization.class.getName());
 
-	private int cachedValueWeightsStamp = -1;
-	private int cachedGradientWeightsStamp = -1;
+  private int cachedValueWeightsStamp = -1;
+  private int cachedGradientWeightsStamp = -1;
   
   // model's expectations according to entropy reg.
   protected CRF.Factors expectations;
@@ -100,7 +100,7 @@ public class CRFOptimizableByEntropyRegularization implements Optimizable.ByGrad
    * Analogous to <tt>CRFOptimizableByLabelLikelihood.getExpectationValue<tt>.
    */
   public void computeExpectations() {
-  	expectations.zero();
+    expectations.zero();
 
     // now, update the expectations due to each instance for entropy reg.
     for (int ii = 0; ii < data.size(); ii++) {
@@ -116,32 +116,32 @@ public class CRFOptimizableByEntropyRegularization implements Optimizable.ByGrad
   }
 
   public double getValue() {
-		if (crf.getWeightsValueChangeStamp() != cachedValueWeightsStamp) {
-		  // The cached value is not up to date; it was calculated for a different set of CRF weights.
-		  cachedValueWeightsStamp = crf.getWeightsValueChangeStamp(); 
-	  	
-	  	cachedValue = 0;
-	  	computeExpectations();
-	    cachedValue = scalingFactor * cachedValue;
-			assert(!Double.isNaN(cachedValue) && !Double.isInfinite(cachedValue))
-	        : "Likelihood due to Entropy Regularization is NaN/Infinite";
-	
-	    logger.info("getValue() (entropy regularization) = " + cachedValue);
-		}
-  	return cachedValue;
+    if (crf.getWeightsValueChangeStamp() != cachedValueWeightsStamp) {
+      // The cached value is not up to date; it was calculated for a different set of CRF weights.
+      cachedValueWeightsStamp = crf.getWeightsValueChangeStamp(); 
+      
+      cachedValue = 0;
+      computeExpectations();
+      cachedValue = scalingFactor * cachedValue;
+      assert(!Double.isNaN(cachedValue) && !Double.isInfinite(cachedValue))
+          : "Likelihood due to Entropy Regularization is NaN/Infinite";
+  
+      logger.info("getValue() (entropy regularization) = " + cachedValue);
+    }
+    return cachedValue;
   }
 
   public void getValueGradient(double[] buffer) {
-		if (cachedGradientWeightsStamp != crf.getWeightsValueChangeStamp()) {
-			cachedGradientWeightsStamp = crf.getWeightsValueChangeStamp(); // cachedGradient will soon no longer be stale
-  	
-  	  getValue();
-  	
+    if (cachedGradientWeightsStamp != crf.getWeightsValueChangeStamp()) {
+      cachedGradientWeightsStamp = crf.getWeightsValueChangeStamp(); // cachedGradient will soon no longer be stale
+    
+      getValue();
+    
       // if this fails then look in computeExpectations
       expectations.assertNotNaNOrInfinite();
-  	  // fill up gradient
-  	  expectations.getParameters(cachedGradient);
-		}
+      // fill up gradient
+      expectations.getParameters(cachedGradient);
+    }
     System.arraycopy(cachedGradient, 0, buffer, 0, cachedGradient.length);
   }
 
@@ -152,12 +152,12 @@ public class CRFOptimizableByEntropyRegularization implements Optimizable.ByGrad
 
   public void getParameters(double[] buffer) {
     crf.getParameters().getParameters(buffer);
-	}
+  }
 
   public void setParameters(double[] buffer) {
     crf.getParameters().setParameters(buffer);
     crf.weightsValueChanged();
-	}
+  }
 
   public double getParameter(int index) {
     return crf.getParameters().getParameter(index);
@@ -166,7 +166,7 @@ public class CRFOptimizableByEntropyRegularization implements Optimizable.ByGrad
   public void setParameter(int index, double value) {
     crf.getParameters().setParameter(index, value);
     crf.weightsValueChanged();
-	}
+  }
 
   // serialization stuff
   private static final long serialVersionUID = 1;

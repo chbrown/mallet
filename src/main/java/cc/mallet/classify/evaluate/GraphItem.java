@@ -50,9 +50,9 @@ public class GraphItem {
     Color color;
     
     public GraphItem(String title, int value, Color color) {
-	this.title = title;
-	this.value = value;
-	this.color = color;
+  this.title = title;
+  this.value = value;
+  this.color = color;
     } 
     
 } 

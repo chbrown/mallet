@@ -62,112 +62,112 @@ import cc.mallet.types.FeatureSelection;
  */
 public abstract class Classifier implements AlphabetCarrying, Serializable
 {
-	private static Logger logger = Logger.getLogger(Classifier.class.getName());
+  private static Logger logger = Logger.getLogger(Classifier.class.getName());
 
-	protected Pipe instancePipe;
+  protected Pipe instancePipe;
 
-	/** For serialization only. */
-	protected Classifier()
-	{
-	}
+  /** For serialization only. */
+  protected Classifier()
+  {
+  }
 
-	public Classifier (Pipe instancePipe)
-	{
-		this.instancePipe = instancePipe;
-		// All classifiers must have set of labels.
-		assert (instancePipe.getTargetAlphabet() != null);
-		assert (instancePipe.getTargetAlphabet().getClass().isAssignableFrom(LabelAlphabet.class));
-		// Not all classifiers require a feature dictionary, however.
-	}
+  public Classifier (Pipe instancePipe)
+  {
+    this.instancePipe = instancePipe;
+    // All classifiers must have set of labels.
+    assert (instancePipe.getTargetAlphabet() != null);
+    assert (instancePipe.getTargetAlphabet().getClass().isAssignableFrom(LabelAlphabet.class));
+    // Not all classifiers require a feature dictionary, however.
+  }
 
-	// TODO Change this method name to getPipe();
-	public Pipe getInstancePipe ()
-	{
-		return instancePipe;
-	}
+  // TODO Change this method name to getPipe();
+  public Pipe getInstancePipe ()
+  {
+    return instancePipe;
+  }
 
-	public Alphabet getAlphabet ()
-	{
-		return (Alphabet) instancePipe.getDataAlphabet();
-	}
+  public Alphabet getAlphabet ()
+  {
+    return (Alphabet) instancePipe.getDataAlphabet();
+  }
 
-	public LabelAlphabet getLabelAlphabet ()
-	{
-		return (LabelAlphabet) instancePipe.getTargetAlphabet();
-	}
-	
-	public Alphabet[] getAlphabets() 
-	{
-		return new Alphabet[] {getAlphabet(), getLabelAlphabet()};
-	}
-	
-	public boolean alphabetsMatch (AlphabetCarrying object)
-	{
-		Alphabet[] otherAlphabets = object.getAlphabets();
-		if (otherAlphabets.length == 2 && otherAlphabets[0] == getAlphabet() && otherAlphabets[1] == getLabelAlphabet())
-			return true;
-		return false;
-	}
+  public LabelAlphabet getLabelAlphabet ()
+  {
+    return (LabelAlphabet) instancePipe.getTargetAlphabet();
+  }
+  
+  public Alphabet[] getAlphabets() 
+  {
+    return new Alphabet[] {getAlphabet(), getLabelAlphabet()};
+  }
+  
+  public boolean alphabetsMatch (AlphabetCarrying object)
+  {
+    Alphabet[] otherAlphabets = object.getAlphabets();
+    if (otherAlphabets.length == 2 && otherAlphabets[0] == getAlphabet() && otherAlphabets[1] == getLabelAlphabet())
+      return true;
+    return false;
+  }
 
-	
+  
 
-	// TODO Make argument List<Instance>
-	public ArrayList<Classification> classify (InstanceList instances)
-	{
-		ArrayList<Classification> ret = new ArrayList<Classification> (instances.size());
-		for (Instance inst : instances)
-			ret.add (classify (inst));
-		return ret;
-	}
+  // TODO Make argument List<Instance>
+  public ArrayList<Classification> classify (InstanceList instances)
+  {
+    ArrayList<Classification> ret = new ArrayList<Classification> (instances.size());
+    for (Instance inst : instances)
+      ret.add (classify (inst));
+    return ret;
+  }
 
-	public Classification[] classify (Instance[] instances)
-	{
-		Classification[] ret = new Classification[instances.length];
-		for (int i = 0; i < instances.length; i++)
-			ret[i] = classify (instances[i]);
-		return ret;
-	}
+  public Classification[] classify (Instance[] instances)
+  {
+    Classification[] ret = new Classification[instances.length];
+    for (int i = 0; i < instances.length; i++)
+      ret[i] = classify (instances[i]);
+    return ret;
+  }
 
-	public abstract Classification classify (Instance instance);
+  public abstract Classification classify (Instance instance);
 
-	/** Pipe the object through this classifier's pipe, then classify the resulting instance. */
-	public Classification classify (Object obj)
-	{
-		if (obj instanceof Instance)
-			return classify ((Instance)obj);
-		return classify (instancePipe.instanceFrom(new Instance (obj, null, null, null)));
-	}
-	
-	
-	public FeatureSelection getFeatureSelection () { return null; }
-	public FeatureSelection[] getPerClassFeatureSelection () { return null; }
+  /** Pipe the object through this classifier's pipe, then classify the resulting instance. */
+  public Classification classify (Object obj)
+  {
+    if (obj instanceof Instance)
+      return classify ((Instance)obj);
+    return classify (instancePipe.instanceFrom(new Instance (obj, null, null, null)));
+  }
+  
+  
+  public FeatureSelection getFeatureSelection () { return null; }
+  public FeatureSelection[] getPerClassFeatureSelection () { return null; }
 
-	
-	// Various evaluation methods
-	
-	public double getAccuracy (InstanceList ilist) { return new Trial(this, ilist).getAccuracy(); }
-	public double getPrecision (InstanceList ilist, int index) { return new Trial(this, ilist).getPrecision(index); }
-	public double getPrecision (InstanceList ilist, Labeling labeling) { return new Trial(this, ilist).getPrecision(labeling); }
-	public double getPrecision (InstanceList ilist, Object labelEntry) { return new Trial(this, ilist).getPrecision(labelEntry); }
-	public double getRecall (InstanceList ilist, int index) { return new Trial(this, ilist).getRecall(index); }
-	public double getRecall (InstanceList ilist, Labeling labeling) { return new Trial(this, ilist).getRecall(labeling); }
-	public double getRecall (InstanceList ilist, Object labelEntry) { return new Trial(this, ilist).getRecall(labelEntry); }
-	public double getF1 (InstanceList ilist, int index) { return new Trial(this, ilist).getF1(index); }
-	public double getF1 (InstanceList ilist, Labeling labeling) { return new Trial(this, ilist).getF1(labeling); }
-	public double getF1 (InstanceList ilist, Object labelEntry) { return new Trial(this, ilist).getF1(labelEntry); }
-	public double getAverageRank (InstanceList ilist) { return new Trial(this, ilist).getAverageRank(); }
-	
+  
+  // Various evaluation methods
+  
+  public double getAccuracy (InstanceList ilist) { return new Trial(this, ilist).getAccuracy(); }
+  public double getPrecision (InstanceList ilist, int index) { return new Trial(this, ilist).getPrecision(index); }
+  public double getPrecision (InstanceList ilist, Labeling labeling) { return new Trial(this, ilist).getPrecision(labeling); }
+  public double getPrecision (InstanceList ilist, Object labelEntry) { return new Trial(this, ilist).getPrecision(labelEntry); }
+  public double getRecall (InstanceList ilist, int index) { return new Trial(this, ilist).getRecall(index); }
+  public double getRecall (InstanceList ilist, Labeling labeling) { return new Trial(this, ilist).getRecall(labeling); }
+  public double getRecall (InstanceList ilist, Object labelEntry) { return new Trial(this, ilist).getRecall(labelEntry); }
+  public double getF1 (InstanceList ilist, int index) { return new Trial(this, ilist).getF1(index); }
+  public double getF1 (InstanceList ilist, Labeling labeling) { return new Trial(this, ilist).getF1(labeling); }
+  public double getF1 (InstanceList ilist, Object labelEntry) { return new Trial(this, ilist).getF1(labelEntry); }
+  public double getAverageRank (InstanceList ilist) { return new Trial(this, ilist).getAverageRank(); }
+  
 
-	/**
-	 * Outputs human-readable description of classifier (e.g., list of weights, decision tree)
-	 *  to System.out
-	 */
-	public void print () {
-		System.out.println ("Classifier "+getClass().getName()+"\n  Detailed printout not yet implemented.");
-	}
+  /**
+   * Outputs human-readable description of classifier (e.g., list of weights, decision tree)
+   *  to System.out
+   */
+  public void print () {
+    System.out.println ("Classifier "+getClass().getName()+"\n  Detailed printout not yet implemented.");
+  }
 
-	public void print (PrintWriter out) {
-		out.println ("Classifier "+getClass().getName()+"\n  Detailed printout not yet implemented.");
-	}
+  public void print (PrintWriter out) {
+    out.println ("Classifier "+getClass().getName()+"\n  Detailed printout not yet implemented.");
+  }
 
 }

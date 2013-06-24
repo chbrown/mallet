@@ -9,8 +9,8 @@
 
 
 /**
-	 Evaluate segmentation f1 for several different tags (marked in OIB format).
-	 For example, tags might be B-PERSON I-PERSON O B-LOCATION I-LOCATION O...
+   Evaluate segmentation f1 for several different tags (marked in OIB format).
+   For example, tags might be B-PERSON I-PERSON O B-LOCATION I-LOCATION O...
 
    @author Andrew McCallum <a href="mailto:mccallum@cs.umass.edu">mccallum@cs.umass.edu</a>
  */
@@ -38,51 +38,51 @@ import cc.mallet.util.MalletLogger;
  */
 public class MultiSegmentationEvaluator extends TransducerEvaluator
 {
-	private static Logger logger = MalletLogger.getLogger(SegmentationEvaluator.class.getName());
+  private static Logger logger = MalletLogger.getLogger(SegmentationEvaluator.class.getName());
 
-	// equals() is called on these objects to determine if this token is the start or continuation of a segment.
-	// A tag not equal to any of these is an "other".
-	// is not part of the segment).
-	Object[] segmentStartTags;
-	Object[] segmentContinueTags;
-	Object[] segmentStartOrContinueTags;
-	
-	public MultiSegmentationEvaluator (InstanceList[] instanceLists, String[] instanceListDescriptions,
-			Object[] segmentStartTags, Object[] segmentContinueTags)
-	{
-		super (instanceLists, instanceListDescriptions);
-		this.segmentStartTags = segmentStartTags;
-		this.segmentContinueTags = segmentContinueTags;
-		assert (segmentStartTags.length == segmentContinueTags.length);
-	}
-	
-	public MultiSegmentationEvaluator (InstanceList instanceList1, String description1,
-			Object[] segmentStartTags, Object[] segmentContinueTags)
-	{
-		this (new InstanceList[] {instanceList1}, new String[] {description1},
-				segmentStartTags, segmentContinueTags);
-	}
-	
-	public MultiSegmentationEvaluator (InstanceList instanceList1, String description1,
-			InstanceList instanceList2, String description2,
-			Object[] segmentStartTags, Object[] segmentContinueTags)
-	{
-		this (new InstanceList[] {instanceList1, instanceList2}, new String[] {description1, description2},
-				segmentStartTags, segmentContinueTags);
-	}
-
-	public MultiSegmentationEvaluator (InstanceList instanceList1, String description1,
-			InstanceList instanceList2, String description2,
-			InstanceList instanceList3, String description3,
-			Object[] segmentStartTags, Object[] segmentContinueTags)
-	{
-		this (new InstanceList[] {instanceList1, instanceList2, instanceList3}, new String[] {description1, description2, description3},
-				segmentStartTags, segmentContinueTags);
-	}
-
-	public void evaluateInstanceList (TransducerTrainer tt, InstanceList data, String description)
+  // equals() is called on these objects to determine if this token is the start or continuation of a segment.
+  // A tag not equal to any of these is an "other".
+  // is not part of the segment).
+  Object[] segmentStartTags;
+  Object[] segmentContinueTags;
+  Object[] segmentStartOrContinueTags;
+  
+  public MultiSegmentationEvaluator (InstanceList[] instanceLists, String[] instanceListDescriptions,
+      Object[] segmentStartTags, Object[] segmentContinueTags)
   {
-  	Transducer model = tt.getTransducer();
+    super (instanceLists, instanceListDescriptions);
+    this.segmentStartTags = segmentStartTags;
+    this.segmentContinueTags = segmentContinueTags;
+    assert (segmentStartTags.length == segmentContinueTags.length);
+  }
+  
+  public MultiSegmentationEvaluator (InstanceList instanceList1, String description1,
+      Object[] segmentStartTags, Object[] segmentContinueTags)
+  {
+    this (new InstanceList[] {instanceList1}, new String[] {description1},
+        segmentStartTags, segmentContinueTags);
+  }
+  
+  public MultiSegmentationEvaluator (InstanceList instanceList1, String description1,
+      InstanceList instanceList2, String description2,
+      Object[] segmentStartTags, Object[] segmentContinueTags)
+  {
+    this (new InstanceList[] {instanceList1, instanceList2}, new String[] {description1, description2},
+        segmentStartTags, segmentContinueTags);
+  }
+
+  public MultiSegmentationEvaluator (InstanceList instanceList1, String description1,
+      InstanceList instanceList2, String description2,
+      InstanceList instanceList3, String description3,
+      Object[] segmentStartTags, Object[] segmentContinueTags)
+  {
+    this (new InstanceList[] {instanceList1, instanceList2, instanceList3}, new String[] {description1, description2, description3},
+        segmentStartTags, segmentContinueTags);
+  }
+
+  public void evaluateInstanceList (TransducerTrainer tt, InstanceList data, String description)
+  {
+    Transducer model = tt.getTransducer();
     int numCorrectTokens, totalTokens;
     int[] numTrueSegments, numPredictedSegments, numCorrectSegments;
     int allIndex = segmentStartTags.length;
@@ -103,7 +103,7 @@ public class MultiSegmentationEvaluator extends TransducerEvaluator
       assert (input.size() == trueOutput.size());
       Sequence predOutput = model.transduce (input);
       assert (predOutput.size() == trueOutput.size());
-      int trueStart, predStart;				// -1 for non-start, otherwise index into segmentStartTag
+      int trueStart, predStart;       // -1 for non-start, otherwise index into segmentStartTag
       for (int j = 0; j < trueOutput.size(); j++) {
         totalTokens++;
         if (trueOutput.get(j).equals(predOutput.get(j)))
@@ -168,14 +168,14 @@ public class MultiSegmentationEvaluator extends TransducerEvaluator
   }
 
 
-	/**
+  /**
    * Returns the number of incorrect segments in <code>predOutput</code>
    * 
    * @param trueOutput truth
    * @param predOutput predicted
    * @return number of incorrect segments
    */
-	public int numIncorrectSegments (Sequence trueOutput, Sequence predOutput) {
+  public int numIncorrectSegments (Sequence trueOutput, Sequence predOutput) {
     int numCorrectTokens, totalTokens;
     int[] numTrueSegments, numPredictedSegments, numCorrectSegments;
     int allIndex = segmentStartTags.length;
@@ -185,66 +185,66 @@ public class MultiSegmentationEvaluator extends TransducerEvaluator
     totalTokens = numCorrectTokens = 0;
     for (int n = 0; n < numTrueSegments.length; n++)
       numTrueSegments[n] = numPredictedSegments[n] = numCorrectSegments[n] = 0;
-		assert (predOutput.size() == trueOutput.size());
-		// -1 for non-start, otherwise index into segmentStartTag
-		int trueStart, predStart;				
-		for (int j = 0; j < trueOutput.size(); j++) {
-			totalTokens++;
-			if (trueOutput.get(j).equals(predOutput.get(j)))
-				numCorrectTokens++;
-			trueStart = predStart = -1;
-			// Count true segment starts
-			for (int n = 0; n < segmentStartTags.length; n++) {
-				if (segmentStartTags[n].equals(trueOutput.get(j))) {
-					numTrueSegments[n]++;
-					numTrueSegments[allIndex]++;
-					trueStart = n;
-					break;
-				}
-			}
-			// Count predicted segment starts
-			for (int n = 0; n < segmentStartTags.length; n++) {
-				if (segmentStartTags[n].equals(predOutput.get(j))) {
-					numPredictedSegments[n]++;
-					numPredictedSegments[allIndex]++;
-					predStart = n;
-				}
-			}
-			if (trueStart != -1 && trueStart == predStart) {
-				// Truth and Prediction both agree that the same segment tag-type is starting now
-				int m;
-				boolean trueContinue = false;
-				boolean predContinue = false;
-				for (m = j+1; m < trueOutput.size(); m++) {
-					trueContinue = segmentContinueTags[predStart].equals (trueOutput.get(m));
-					predContinue = segmentContinueTags[predStart].equals (predOutput.get(m));
-					if (!trueContinue || !predContinue) {
-						if (trueContinue == predContinue) {
-							// They agree about a segment is ending somehow
-							numCorrectSegments[predStart]++;
-							numCorrectSegments[allIndex]++;
-						}
-						break;
-					}
-				}
-				// for the case of the end of the sequence
-				if (m == trueOutput.size()) {
-					if (trueContinue == predContinue) {
-						numCorrectSegments[predStart]++;
-						numCorrectSegments[allIndex]++;
-					}
-				}
-			}			
-		}
-		int wrong = 0;
-		for (int n=0; n < numCorrectSegments.length; n++) {
-			// incorrect segment is either false pos or false neg.
-			wrong += numTrueSegments[n] - numCorrectSegments[n]; 
-		}
-		return wrong;
-	}
+    assert (predOutput.size() == trueOutput.size());
+    // -1 for non-start, otherwise index into segmentStartTag
+    int trueStart, predStart;       
+    for (int j = 0; j < trueOutput.size(); j++) {
+      totalTokens++;
+      if (trueOutput.get(j).equals(predOutput.get(j)))
+        numCorrectTokens++;
+      trueStart = predStart = -1;
+      // Count true segment starts
+      for (int n = 0; n < segmentStartTags.length; n++) {
+        if (segmentStartTags[n].equals(trueOutput.get(j))) {
+          numTrueSegments[n]++;
+          numTrueSegments[allIndex]++;
+          trueStart = n;
+          break;
+        }
+      }
+      // Count predicted segment starts
+      for (int n = 0; n < segmentStartTags.length; n++) {
+        if (segmentStartTags[n].equals(predOutput.get(j))) {
+          numPredictedSegments[n]++;
+          numPredictedSegments[allIndex]++;
+          predStart = n;
+        }
+      }
+      if (trueStart != -1 && trueStart == predStart) {
+        // Truth and Prediction both agree that the same segment tag-type is starting now
+        int m;
+        boolean trueContinue = false;
+        boolean predContinue = false;
+        for (m = j+1; m < trueOutput.size(); m++) {
+          trueContinue = segmentContinueTags[predStart].equals (trueOutput.get(m));
+          predContinue = segmentContinueTags[predStart].equals (predOutput.get(m));
+          if (!trueContinue || !predContinue) {
+            if (trueContinue == predContinue) {
+              // They agree about a segment is ending somehow
+              numCorrectSegments[predStart]++;
+              numCorrectSegments[allIndex]++;
+            }
+            break;
+          }
+        }
+        // for the case of the end of the sequence
+        if (m == trueOutput.size()) {
+          if (trueContinue == predContinue) {
+            numCorrectSegments[predStart]++;
+            numCorrectSegments[allIndex]++;
+          }
+        }
+      }     
+    }
+    int wrong = 0;
+    for (int n=0; n < numCorrectSegments.length; n++) {
+      // incorrect segment is either false pos or false neg.
+      wrong += numTrueSegments[n] - numCorrectSegments[n]; 
+    }
+    return wrong;
+  }
 
-	/**
+  /**
    * Tests segmentation using an ArrayList of predicted Sequences instead of a
    * {@link Transducer}. If predictedSequence is null, don't include in stats
    * (useful for error analysis).
@@ -255,7 +255,7 @@ public class MultiSegmentationEvaluator extends TransducerEvaluator
    * @param viterbiOutputStream where to print the Viterbi paths
    */
   public void batchTest(InstanceList data, List<Sequence> predictedSequences,
-												String description, PrintStream viterbiOutputStream)
+                        String description, PrintStream viterbiOutputStream)
   {
     int numCorrectTokens, totalTokens;
     int[] numTrueSegments, numPredictedSegments, numCorrectSegments;
@@ -272,17 +272,17 @@ public class MultiSegmentationEvaluator extends TransducerEvaluator
       if (viterbiOutputStream != null)
         viterbiOutputStream.println ("Viterbi path for "+description+" instance #"+i);
       Instance instance = data.get(i);
-      Sequence input = (Sequence) instance.getData();			
+      Sequence input = (Sequence) instance.getData();     
       //String tokens = null;
       //if (instance.getSource() != null)
       //tokens = (String) instance.getSource().toString();
       Sequence trueOutput = (Sequence) instance.getTarget();
       assert (input.size() == trueOutput.size());
       Sequence predOutput = (Sequence) predictedSequences.get (i);
-			if (predOutput == null) // skip this instance
-				continue;
+      if (predOutput == null) // skip this instance
+        continue;
       assert (predOutput.size() == trueOutput.size());
-      int trueStart, predStart;				// -1 for non-start, otherwise index into segmentStartTag
+      int trueStart, predStart;       // -1 for non-start, otherwise index into segmentStartTag
       for (int j = 0; j < trueOutput.size(); j++) {
         totalTokens++;
         if (trueOutput.get(j).equals(predOutput.get(j)))
@@ -339,7 +339,7 @@ public class MultiSegmentationEvaluator extends TransducerEvaluator
             viterbiOutputStream.print (sourceTokenSequence.get(j).getText()+": ");
           viterbiOutputStream.println (trueOutput.get(j).toString()+
                                        '/'+predOutput.get(j).toString()+"  "+ fv.toString(true));
-						
+            
         }
       }
     }

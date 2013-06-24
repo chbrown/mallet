@@ -40,7 +40,7 @@ public class CRFTrainerByPR extends TransducerTrainer implements TransducerTrain
   private StateLabelMap stateLabelMap;
   
   public CRFTrainerByPR(CRF crf, ArrayList<PRConstraint> constraints) {
-  	this(crf,constraints,1);
+    this(crf,constraints,1);
   }
   
   public CRFTrainerByPR(CRF crf, ArrayList<PRConstraint> constraints, int numThreads) {
@@ -79,16 +79,16 @@ public class CRFTrainerByPR extends TransducerTrainer implements TransducerTrain
   }
   
   public void setTolerance(double tolerance) {
-  	this.tolerance = tolerance;
+    this.tolerance = tolerance;
   }
   
   @Override
   public boolean train(InstanceList train, int numIterations) {
-  	return train(train,0,numIterations);
+    return train(train,0,numIterations);
   }
   
   public boolean train(InstanceList train, int minIter, int maxIter) {
-  	return train(train,minIter,maxIter,Integer.MAX_VALUE);
+    return train(train,minIter,maxIter,Integer.MAX_VALUE);
   }
   
   public boolean train(InstanceList train, int minIter, int maxIter, int maxIterPerStep) {
@@ -117,8 +117,8 @@ public class CRFTrainerByPR extends TransducerTrainer implements TransducerTrain
     PRAuxiliaryModel model = new PRAuxiliaryModel(crf,constraints);
 
     for (; iter < max; iter++) {
-    	long startTime = System.currentTimeMillis();
-    	
+      long startTime = System.currentTimeMillis();
+      
       // train q
       ConstraintsOptimizableByPR opt = new ConstraintsOptimizableByPR(crf, train, model, numThreads);
       bfgs = new LimitedMemoryBFGS(opt);
@@ -160,9 +160,9 @@ public class CRFTrainerByPR extends TransducerTrainer implements TransducerTrain
       //System.err.println("Convergence test: " + (2.0*Math.abs(value-oldValue)) + " <= " + (tolerance * (Math.abs(value)+Math.abs(oldValue) + 1e-5)));
       if((iter >= minIter) && 2.0*Math.abs(value-oldValue) <= tolerance *
           (Math.abs(value)+Math.abs(oldValue) + 1e-5)){
-      	System.err.println("AP value difference below tolerance (oldValue: " 
+        System.err.println("AP value difference below tolerance (oldValue: " 
           + oldValue + "newValue: " + value);
-      	
+        
         break;
       }
       
@@ -176,11 +176,11 @@ public class CRFTrainerByPR extends TransducerTrainer implements TransducerTrain
   }
   
   public double getTotalValue() {
-  	return value;
+    return value;
   }
   
   public double getQValue() {
-  	return qValue;
+    return qValue;
   }
 
   public Optimizer getOptimizer() {

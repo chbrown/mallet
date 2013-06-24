@@ -18,7 +18,7 @@ public interface Tokenization extends Sequence //??
   /**
    * Returns the document of which this is a tokenization.
    */
-	public Object getDocument ();
+  public Object getDocument ();
 
   public Span getSpan (int i);
 

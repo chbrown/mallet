@@ -35,7 +35,7 @@ import cc.mallet.util.Maths;
 
 public class FeatureConstraintUtil {
   
-	private static Logger logger = MalletLogger.getLogger(FeatureConstraintUtil.class.getName());
+  private static Logger logger = MalletLogger.getLogger(FeatureConstraintUtil.class.getName());
   
   /**
    * Reads range constraints stored using strings from a file. Format can be either:
@@ -463,7 +463,7 @@ public class FeatureConstraintUtil {
   }
   
   public static HashMap<Integer, ArrayList<Integer>> labelFeatures(InstanceList list, ArrayList<Integer> features) {
-  	return labelFeatures(list,features,true);
+    return labelFeatures(list,features,true);
   }
   
   public static double[][] getFeatureLabelCounts(InstanceList list, boolean useValues) {

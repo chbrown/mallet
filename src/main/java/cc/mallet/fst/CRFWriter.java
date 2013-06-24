@@ -24,31 +24,31 @@ import cc.mallet.util.MalletLogger;
  * @author Gaurav Chandalia
  */
 public class CRFWriter extends TransducerEvaluator {
-	private static Logger logger = MalletLogger.getLogger(CRFWriter.class.getName());
+  private static Logger logger = MalletLogger.getLogger(CRFWriter.class.getName());
 
-	String filenamePrefix;
+  String filenamePrefix;
 
-	public CRFWriter (String filenamePrefix) {
-		super (new InstanceList[]{}, new String[]{});
-		this.filenamePrefix = filenamePrefix;
-	}
+  public CRFWriter (String filenamePrefix) {
+    super (new InstanceList[]{}, new String[]{});
+    this.filenamePrefix = filenamePrefix;
+  }
 
-	protected void preamble (TransducerTrainer tt) {
-		int iteration = tt.getIteration();
-		String filename = filenamePrefix + "." + iteration + ".bin";
-		try {
-			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename));
-			oos.writeObject(tt.getTransducer());
-			logger.info("Trained model saved: " + filename + ", iter: " + iteration);
-		} catch (FileNotFoundException fnfe) {
-			logger.warning("Could not save model: " + filename + ", iter: " + iteration);
-			fnfe.printStackTrace();
-		} catch (IOException ioe) {
-			logger.warning("Could not save model: " + filename + ", iter: " + iteration);
-			ioe.printStackTrace();
-		}
-	}
+  protected void preamble (TransducerTrainer tt) {
+    int iteration = tt.getIteration();
+    String filename = filenamePrefix + "." + iteration + ".bin";
+    try {
+      ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename));
+      oos.writeObject(tt.getTransducer());
+      logger.info("Trained model saved: " + filename + ", iter: " + iteration);
+    } catch (FileNotFoundException fnfe) {
+      logger.warning("Could not save model: " + filename + ", iter: " + iteration);
+      fnfe.printStackTrace();
+    } catch (IOException ioe) {
+      logger.warning("Could not save model: " + filename + ", iter: " + iteration);
+      ioe.printStackTrace();
+    }
+  }
 
-	@Override
-	public void evaluateInstanceList(TransducerTrainer transducer, InstanceList instances, String description) { }
+  @Override
+  public void evaluateInstanceList(TransducerTrainer transducer, InstanceList instances, String description) { }
 }

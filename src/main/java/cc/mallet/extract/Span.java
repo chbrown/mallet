@@ -31,7 +31,7 @@ public interface Span
 
   Object getDocument ();
 
-	boolean intersects (Span r);
+  boolean intersects (Span r);
 
   boolean isSubspan (Span r);
 

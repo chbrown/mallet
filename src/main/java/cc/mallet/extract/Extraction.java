@@ -30,7 +30,7 @@ import cc.mallet.types.Sequence;
  */
 public class Extraction
 {
-	private Extractor extractor;
+  private Extractor extractor;
 
   private List byDocs = new ArrayList (); // List of DocumentExtractions
   private List records = new ArrayList ();
@@ -80,10 +80,10 @@ public class Extraction
   public DocumentExtraction getDocumentExtraction(int idx) { return (DocumentExtraction) byDocs.get (idx); }
   public int getNumDocuments () { return byDocs.size(); }
 
-	public Extractor getExtractor ()
-	{
-		return extractor;
-	}
+  public Extractor getExtractor ()
+  {
+    return extractor;
+  }
 
   public Record getTargetRecord (int docnum)
   {

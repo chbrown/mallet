@@ -42,112 +42,112 @@ import cc.mallet.util.*;
 
 public class SvmLight2Vectors {
 
-	private static Logger logger = MalletLogger.getLogger(SvmLight2Vectors.class.getName());
+  private static Logger logger = MalletLogger.getLogger(SvmLight2Vectors.class.getName());
 
-	static CommandOption.SpacedStrings inputFiles =	new CommandOption.SpacedStrings
-		(SvmLight2Vectors.class, "input", "FILE", true, null,
-		 "The files containing data to be classified, one instance per line", null);
+  static CommandOption.SpacedStrings inputFiles = new CommandOption.SpacedStrings
+    (SvmLight2Vectors.class, "input", "FILE", true, null,
+     "The files containing data to be classified, one instance per line", null);
 
-	static CommandOption.SpacedStrings outputFiles = new CommandOption.SpacedStrings
-		(SvmLight2Vectors.class, "output", "FILE", true, null,
-		 "Write the instance list to this file; Using - indicates stdout.", null);
-	
-	static CommandOption.File usePipeFromVectorsFile = new CommandOption.File
-		(SvmLight2Vectors.class, "use-pipe-from", "FILE", true, new File("text.vectors"),
-		 "Use the pipe and alphabets from a previously created vectors file.\n" +
-		 "   Allows the creation, for example, of a test set of vectors that are\n" +
-		 "   compatible with a previously created set of training vectors", null);
+  static CommandOption.SpacedStrings outputFiles = new CommandOption.SpacedStrings
+    (SvmLight2Vectors.class, "output", "FILE", true, null,
+     "Write the instance list to this file; Using - indicates stdout.", null);
+  
+  static CommandOption.File usePipeFromVectorsFile = new CommandOption.File
+    (SvmLight2Vectors.class, "use-pipe-from", "FILE", true, new File("text.vectors"),
+     "Use the pipe and alphabets from a previously created vectors file.\n" +
+     "   Allows the creation, for example, of a test set of vectors that are\n" +
+     "   compatible with a previously created set of training vectors", null);
 
-	static CommandOption.Boolean printOutput = new CommandOption.Boolean
-		(SvmLight2Vectors.class, "print-output", "[TRUE|FALSE]", false, false,
-		 "If true, print a representation of the processed data\n" +
-		 "   to standard output. This option is intended for debugging.", null);
+  static CommandOption.Boolean printOutput = new CommandOption.Boolean
+    (SvmLight2Vectors.class, "print-output", "[TRUE|FALSE]", false, false,
+     "If true, print a representation of the processed data\n" +
+     "   to standard output. This option is intended for debugging.", null);
 
-	static CommandOption.String encoding = new CommandOption.String
-	  (SvmLight2Vectors.class, "encoding", "STRING", true, Charset.defaultCharset().displayName(),
-	 "Character encoding for input file", null);
+  static CommandOption.String encoding = new CommandOption.String
+    (SvmLight2Vectors.class, "encoding", "STRING", true, Charset.defaultCharset().displayName(),
+   "Character encoding for input file", null);
 
-	public static void main (String[] args) throws FileNotFoundException, IOException
-	{
-		// Process the command-line options
-		CommandOption.setSummary (SvmLight2Vectors.class,
-								  "A tool for creating instance lists of feature vectors from comma-separated-values");
-		CommandOption.process (SvmLight2Vectors.class, args);
+  public static void main (String[] args) throws FileNotFoundException, IOException
+  {
+    // Process the command-line options
+    CommandOption.setSummary (SvmLight2Vectors.class,
+                  "A tool for creating instance lists of feature vectors from comma-separated-values");
+    CommandOption.process (SvmLight2Vectors.class, args);
 
-		// Print some helpful messages for error cases
-		if (args.length == 0) {
-			CommandOption.getList(SvmLight2Vectors.class).printUsage(false);
-			System.exit (-1);
-		}
-		if (inputFiles == null) {
-			throw new IllegalArgumentException ("You must include `--input FILE FILE ...' in order to specify "+
-								"files containing the instances, one per line.");
-		}
-		
-		Pipe instancePipe;
-		InstanceList previousInstanceList = null;
-		
-		if (usePipeFromVectorsFile.wasInvoked()) {
+    // Print some helpful messages for error cases
+    if (args.length == 0) {
+      CommandOption.getList(SvmLight2Vectors.class).printUsage(false);
+      System.exit (-1);
+    }
+    if (inputFiles == null) {
+      throw new IllegalArgumentException ("You must include `--input FILE FILE ...' in order to specify "+
+                "files containing the instances, one per line.");
+    }
+    
+    Pipe instancePipe;
+    InstanceList previousInstanceList = null;
+    
+    if (usePipeFromVectorsFile.wasInvoked()) {
 
-			// Ignore all options, use a previously created pipe
+      // Ignore all options, use a previously created pipe
 
-			previousInstanceList = InstanceList.load (usePipeFromVectorsFile.value);
-			instancePipe = previousInstanceList.getPipe();			
-		}
-		else {
-			// Build a new pipe
-			ArrayList<Pipe> pipeList = new ArrayList<Pipe>();
-			pipeList.add(new SvmLight2FeatureVectorAndLabel());
-			if (printOutput.value) {
-				pipeList.add(new PrintInputAndTarget());
-			}
-			instancePipe = new SerialPipes(pipeList);
-		}
+      previousInstanceList = InstanceList.load (usePipeFromVectorsFile.value);
+      instancePipe = previousInstanceList.getPipe();      
+    }
+    else {
+      // Build a new pipe
+      ArrayList<Pipe> pipeList = new ArrayList<Pipe>();
+      pipeList.add(new SvmLight2FeatureVectorAndLabel());
+      if (printOutput.value) {
+        pipeList.add(new PrintInputAndTarget());
+      }
+      instancePipe = new SerialPipes(pipeList);
+    }
 
-		if (inputFiles.value.length != outputFiles.value.length) {
-			throw new RuntimeException("Number of input and output files must be the same.");
-		}
-		
-		InstanceList[] instances = new InstanceList[inputFiles.value.length];
-		for (int fileIndex = 0; fileIndex < inputFiles.value.length; fileIndex++) {
-			// Create the instance list and open the input file
-			instances[fileIndex] = new InstanceList (instancePipe);
-			Reader fileReader;
-			if (inputFiles.value[fileIndex].equals ("-")) {
-				fileReader = new InputStreamReader (System.in);
-			}
-			else {
-				fileReader = new InputStreamReader(new FileInputStream(inputFiles.value[fileIndex]), encoding.value);
-			}
-			
-			// Read instances from the file
-			instances[fileIndex].addThruPipe (new SelectiveFileLineIterator (fileReader, "^\\s*#.+"));
-		}
+    if (inputFiles.value.length != outputFiles.value.length) {
+      throw new RuntimeException("Number of input and output files must be the same.");
+    }
+    
+    InstanceList[] instances = new InstanceList[inputFiles.value.length];
+    for (int fileIndex = 0; fileIndex < inputFiles.value.length; fileIndex++) {
+      // Create the instance list and open the input file
+      instances[fileIndex] = new InstanceList (instancePipe);
+      Reader fileReader;
+      if (inputFiles.value[fileIndex].equals ("-")) {
+        fileReader = new InputStreamReader (System.in);
+      }
+      else {
+        fileReader = new InputStreamReader(new FileInputStream(inputFiles.value[fileIndex]), encoding.value);
+      }
+      
+      // Read instances from the file
+      instances[fileIndex].addThruPipe (new SelectiveFileLineIterator (fileReader, "^\\s*#.+"));
+    }
 
-		// gdruck@cs.umass.edu
-		// If we have multiple files, the data or target alphabet may have new 
-		// elements added to it with each new file. If we save each InstanceList
-		// immediately after processing each file, then Alphabets won't be the 
-		// same.  Instead, process all files before writing the InstanceLists.
-		for (int fileIndex = 0; fileIndex < inputFiles.value.length; fileIndex++) {
-		  // Save instances to output file
-		  instances[fileIndex].save(new File(outputFiles.value[fileIndex]));
-		}
+    // gdruck@cs.umass.edu
+    // If we have multiple files, the data or target alphabet may have new 
+    // elements added to it with each new file. If we save each InstanceList
+    // immediately after processing each file, then Alphabets won't be the 
+    // same.  Instead, process all files before writing the InstanceLists.
+    for (int fileIndex = 0; fileIndex < inputFiles.value.length; fileIndex++) {
+      // Save instances to output file
+      instances[fileIndex].save(new File(outputFiles.value[fileIndex]));
+    }
 
-		//  If we are reusing a pipe from an instance list 
-		//  created earlier, we may have extended the label
-		//  or feature alphabets. To maintain compatibility,
-		//  we now save that original instance list back to disk
-		//  with the new alphabet.
-		if (usePipeFromVectorsFile.wasInvoked()) {
-			logger.info(" Rewriting extended pipe from " + usePipeFromVectorsFile.value);
-			logger.info("  Instance ID = " + previousInstanceList.getPipe().getInstanceId());
-			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(usePipeFromVectorsFile.value));
-			oos.writeObject(previousInstanceList);
-			oos.close();
-		}
-	}
+    //  If we are reusing a pipe from an instance list 
+    //  created earlier, we may have extended the label
+    //  or feature alphabets. To maintain compatibility,
+    //  we now save that original instance list back to disk
+    //  with the new alphabet.
+    if (usePipeFromVectorsFile.wasInvoked()) {
+      logger.info(" Rewriting extended pipe from " + usePipeFromVectorsFile.value);
+      logger.info("  Instance ID = " + previousInstanceList.getPipe().getInstanceId());
+      ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(usePipeFromVectorsFile.value));
+      oos.writeObject(previousInstanceList);
+      oos.close();
+    }
+  }
 }
 
-	
+  
 

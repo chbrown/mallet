@@ -17,32 +17,32 @@ import cc.mallet.types.Instance;
  */
 public class PairwiseScorer implements ClusteringScorer {
 
-	NeighborEvaluator evaluator;
+  NeighborEvaluator evaluator;
 
-	public PairwiseScorer(NeighborEvaluator evaluator) {
-		super();
-		this.evaluator = evaluator;
-	}
+  public PairwiseScorer(NeighborEvaluator evaluator) {
+    super();
+    this.evaluator = evaluator;
+  }
 
-	public double score(Clustering clustering) {
-		Clustering singletons = ClusterUtils
-				.createSingletonClustering(clustering.getInstances());
-		double total = 0;
-		int count = 0;
-		for (AllPairsIterator iter = new AllPairsIterator(singletons); iter
-				.hasNext(); count++) {
-			Instance instance = (Instance) iter.next();
-			AgglomerativeNeighbor neighbor = (AgglomerativeNeighbor) instance
-					.getData();
-			double score = evaluator.evaluate(neighbor);
-			int[][] clusters = neighbor.getOldClusters();
-			if (clustering.getLabel(clusters[0][0]) == clustering
-					.getLabel(clusters[1][0]))
-				total += score;
-			else
-				total += 1.0 - score;
-		}
-		return (double) total / count;
-	}
+  public double score(Clustering clustering) {
+    Clustering singletons = ClusterUtils
+        .createSingletonClustering(clustering.getInstances());
+    double total = 0;
+    int count = 0;
+    for (AllPairsIterator iter = new AllPairsIterator(singletons); iter
+        .hasNext(); count++) {
+      Instance instance = (Instance) iter.next();
+      AgglomerativeNeighbor neighbor = (AgglomerativeNeighbor) instance
+          .getData();
+      double score = evaluator.evaluate(neighbor);
+      int[][] clusters = neighbor.getOldClusters();
+      if (clustering.getLabel(clusters[0][0]) == clustering
+          .getLabel(clusters[1][0]))
+        total += score;
+      else
+        total += 1.0 - score;
+    }
+    return (double) total / count;
+  }
 
 }

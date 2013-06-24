@@ -18,27 +18,27 @@ import cc.mallet.types.*;
  */
 public class BaggingClassifier extends Classifier
 {
-	Classifier[] baggedClassifiers;
-	double[] weights;											// Not yet implemented!
+  Classifier[] baggedClassifiers;
+  double[] weights;                     // Not yet implemented!
 
-	public BaggingClassifier (Pipe instancePipe, Classifier[] baggedClassifiers)
-	{
-		super (instancePipe);
-		this.baggedClassifiers = baggedClassifiers;
-	}
+  public BaggingClassifier (Pipe instancePipe, Classifier[] baggedClassifiers)
+  {
+    super (instancePipe);
+    this.baggedClassifiers = baggedClassifiers;
+  }
 
-	public Classification classify (Instance inst)
-	{
-		int numClasses = getLabelAlphabet().size();
-		double[] scores = new double[numClasses];
-		int bestIndex;
-		double sum = 0;
-		for (int i = 0; i < baggedClassifiers.length; i++) {
-			Labeling labeling = baggedClassifiers[i].classify(inst).getLabeling();
-			labeling.addTo (scores);
-		}
-		MatrixOps.normalize (scores);
-		return new Classification (inst, this, new LabelVector (getLabelAlphabet(), scores));
-	}
+  public Classification classify (Instance inst)
+  {
+    int numClasses = getLabelAlphabet().size();
+    double[] scores = new double[numClasses];
+    int bestIndex;
+    double sum = 0;
+    for (int i = 0; i < baggedClassifiers.length; i++) {
+      Labeling labeling = baggedClassifiers[i].classify(inst).getLabeling();
+      labeling.addTo (scores);
+    }
+    MatrixOps.normalize (scores);
+    return new Classification (inst, this, new LabelVector (getLabelAlphabet(), scores));
+  }
 
 }

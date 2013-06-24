@@ -18,95 +18,95 @@ import cc.mallet.types.InstanceList;
  */
 public abstract class HillClimbingClusterer extends KBestClusterer {
 
-	protected NeighborEvaluator evaluator;
-	
-	public HillClimbingClusterer(Pipe instancePipe, NeighborEvaluator evaluator) {
-		super(instancePipe);
-		this.evaluator = evaluator;
-	}
+  protected NeighborEvaluator evaluator;
+  
+  public HillClimbingClusterer(Pipe instancePipe, NeighborEvaluator evaluator) {
+    super(instancePipe);
+    this.evaluator = evaluator;
+  }
 
-	public NeighborEvaluator getEvaluator () { return evaluator; }
-	
-	/**
-	 * While not converged, calls <code>improveClustering</code> to modify the
-	 * current predicted {@link Clustering}.
-	 * 
-	 * @param instances
-	 * @return The predicted {@link Clustering}.
-	 */
-	public Clustering cluster (InstanceList instances) {
-		return clusterKBest(instances, 1)[0];
-	}
+  public NeighborEvaluator getEvaluator () { return evaluator; }
+  
+  /**
+   * While not converged, calls <code>improveClustering</code> to modify the
+   * current predicted {@link Clustering}.
+   * 
+   * @param instances
+   * @return The predicted {@link Clustering}.
+   */
+  public Clustering cluster (InstanceList instances) {
+    return clusterKBest(instances, 1)[0];
+  }
 
-	/* (non-Javadoc)
-	 * @see edu.umass.cs.mallet.base.cluster.KBestClusterer#clusterKBest(edu.umass.cs.mallet.base.types.InstanceList)
-	 */
-	public Clustering[] clusterKBest (InstanceList instances, int k) {
-		reset();
-		return clusterKBest(instances, Integer.MAX_VALUE, null, k);
-	}
+  /* (non-Javadoc)
+   * @see edu.umass.cs.mallet.base.cluster.KBestClusterer#clusterKBest(edu.umass.cs.mallet.base.types.InstanceList)
+   */
+  public Clustering[] clusterKBest (InstanceList instances, int k) {
+    reset();
+    return clusterKBest(instances, Integer.MAX_VALUE, null, k);
+  }
 
-	/**
-	 * While not converged, call <code>improveClustering</code> to
-	 * modify the current predicted {@link Clustering}.
-	 * @param instances Instances to cluster.
-	 * @param iterations Maximum number of iterations.
-	 * @param initialClustering Initial clustering of the Instances.
-	 * @return The predicted {@link Clustering}
-	 */
-	public Clustering cluster (InstanceList instances, int iterations, Clustering initialClustering) {
-		return clusterKBest(instances, iterations, initialClustering, 1)[0];
-	}
+  /**
+   * While not converged, call <code>improveClustering</code> to
+   * modify the current predicted {@link Clustering}.
+   * @param instances Instances to cluster.
+   * @param iterations Maximum number of iterations.
+   * @param initialClustering Initial clustering of the Instances.
+   * @return The predicted {@link Clustering}
+   */
+  public Clustering cluster (InstanceList instances, int iterations, Clustering initialClustering) {
+    return clusterKBest(instances, iterations, initialClustering, 1)[0];
+  }
 
-	
-	
-	/**
-	 * Return the K most recent solutions.
-	 * @param instances
-	 * @param iterations
-	 * @param initialClustering
-	 * @return
-	 */
-	public Clustering[] clusterKBest (InstanceList instances, int iterations, Clustering initialClustering, int k) {
-		LinkedList<Clustering> solutions = new LinkedList<Clustering>();
-		Clustering bestsofar = (initialClustering == null) ? initializeClustering(instances) : initialClustering;
-		solutions.addFirst(bestsofar);
-		int iter = 0;		
-		do {
-			bestsofar = improveClustering(solutions.getFirst().shallowCopy());
-			if (!bestsofar.equals(solutions.getFirst())) 
-				solutions.addFirst(bestsofar);				
-			if (solutions.size() == k + 1)
-				solutions.removeLast();			
-		} while (!converged(bestsofar) && iter++ < iterations);
+  
+  
+  /**
+   * Return the K most recent solutions.
+   * @param instances
+   * @param iterations
+   * @param initialClustering
+   * @return
+   */
+  public Clustering[] clusterKBest (InstanceList instances, int iterations, Clustering initialClustering, int k) {
+    LinkedList<Clustering> solutions = new LinkedList<Clustering>();
+    Clustering bestsofar = (initialClustering == null) ? initializeClustering(instances) : initialClustering;
+    solutions.addFirst(bestsofar);
+    int iter = 0;   
+    do {
+      bestsofar = improveClustering(solutions.getFirst().shallowCopy());
+      if (!bestsofar.equals(solutions.getFirst())) 
+        solutions.addFirst(bestsofar);        
+      if (solutions.size() == k + 1)
+        solutions.removeLast();     
+    } while (!converged(bestsofar) && iter++ < iterations);
 
-		return solutions.toArray(new Clustering[]{});
-	}
+    return solutions.toArray(new Clustering[]{});
+  }
 
-	/**
-	 *
-	 * @param clustering
-	 * @return True if clustering is complete. 
-	 */
-	public abstract boolean converged (Clustering clustering);
+  /**
+   *
+   * @param clustering
+   * @return True if clustering is complete. 
+   */
+  public abstract boolean converged (Clustering clustering);
 
-	/**
-	 *
-	 * @param clustering
-	 * @return A modified Clustering.
-	 */
-	public abstract Clustering improveClustering (Clustering clustering);
-	
-	/**
-	 *
-	 * @param instances
-	 * @return An initialized Clustering of these Instances.
-	 */
-	public abstract Clustering initializeClustering (InstanceList instances);
-	
-	/**
-	 * Perform any cleanup of the clustering algorithm prior to
-	 * clustering.
-	 */
-	public abstract void reset ();
+  /**
+   *
+   * @param clustering
+   * @return A modified Clustering.
+   */
+  public abstract Clustering improveClustering (Clustering clustering);
+  
+  /**
+   *
+   * @param instances
+   * @return An initialized Clustering of these Instances.
+   */
+  public abstract Clustering initializeClustering (InstanceList instances);
+  
+  /**
+   * Perform any cleanup of the clustering algorithm prior to
+   * clustering.
+   */
+  public abstract void reset ();
 }

@@ -93,7 +93,7 @@ public class EntropyLattice {
         double gamma = gammas[ip][a];
         if (gamma > Transducer.IMPOSSIBLE_WEIGHT) {
           for (int b = 0; b < numStates; ++b) {
-          	// position ip in input sequence, state a, coming from state b
+            // position ip in input sequence, state a, coming from state b
             double xi = xis[ip-1][b][a];
             if (xi > Transducer.IMPOSSIBLE_WEIGHT) {
               // p(y_{ip-1}=b|y_{ip}=a)
@@ -106,17 +106,17 @@ public class EntropyLattice {
       }
     }
 
-		double entropy = 0.0;
-		for (int a = 0; a < numStates; ++a) {
-			double gamma = gammas[inputLength][a];
-			double gammaProb = Math.exp(gamma);
+    double entropy = 0.0;
+    for (int a = 0; a < numStates; ++a) {
+      double gamma = gammas[inputLength][a];
+      double gammaProb = Math.exp(gamma);
 
       if (gamma > Transducer.IMPOSSIBLE_WEIGHT) {
         entropy += gammaProb * gamma;
         entropy += gammaProb * this.getLatticeNode(inputLength, a).alpha;
       }
-		}
-		return entropy;
+    }
+    return entropy;
   }
 
   /**
@@ -130,12 +130,12 @@ public class EntropyLattice {
      
     for (int ip = inputLength; ip >= 0; --ip) {
       for (int a = 0; a < numStates; ++a) {
-      	// position ip-1 in input sequence, state a
+        // position ip-1 in input sequence, state a
         LatticeNode node = this.getLatticeNode(ip, a);
         double gamma = gammas[ip][a];
         if (gamma > Transducer.IMPOSSIBLE_WEIGHT) {
           for (int b = 0; b < numStates; ++b) {
-          	// position ip in input sequence, state a
+            // position ip in input sequence, state a
             double xi = xis[ip][a][b];
             if (xi > Transducer.IMPOSSIBLE_WEIGHT) {
               // p(y_{ip}=b|y_{ip-1}=a)
@@ -148,17 +148,17 @@ public class EntropyLattice {
       }
     }
 
-		double entropy = 0.0;
-		for (int a = 0; a < numStates; ++a) {
-			double gamma = gammas[0][a];
-			double gammaProb = Math.exp(gamma);
+    double entropy = 0.0;
+    for (int a = 0; a < numStates; ++a) {
+      double gamma = gammas[0][a];
+      double gammaProb = Math.exp(gamma);
 
       if (gamma > Transducer.IMPOSSIBLE_WEIGHT) {
         entropy += gammaProb * gamma;
         entropy += gammaProb * this.getLatticeNode(0, a).beta;
       }
-		}
-		return entropy;
+    }
+    return entropy;
   }
 
   /**
@@ -185,7 +185,7 @@ public class EntropyLattice {
           // This is obtained after substituting and re-arranging the equation
           // at the end of the third page of the paper into the equation of
           // d/d_theta -H(Y|x) at the end of the second page.
-					// \sum_(y_i,y_{i+1})
+          // \sum_(y_i,y_{i+1})
           //      f_k(y_i,y_{i+1},x)  p(y_i, y_{i+1}) *
           //      (log p(y_i,y_{i+1}) + H^a(Y_{1..(i-1)},y_i) +
           //       H^b(Y_{(i+2)..T}|y_{i+1}))
@@ -206,11 +206,11 @@ public class EntropyLattice {
   }
 
   public LatticeNode getLatticeNode(int ip, int si) {
-		if (nodes[ip][si] == null) {
+    if (nodes[ip][si] == null) {
       nodes[ip][si] = new LatticeNode(ip, transducer.getState(si));
     }
-		return nodes[ip][si];
-	}
+    return nodes[ip][si];
+  }
   
   /**
    * Contains alpha, beta values at a particular input position and state pair.

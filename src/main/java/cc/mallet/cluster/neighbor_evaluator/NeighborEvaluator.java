@@ -13,25 +13,25 @@ package cc.mallet.cluster.neighbor_evaluator;
  */
 public interface NeighborEvaluator {
 
-	/**
-	 *
-	 * @param neighbor
-	 * @return A higher score indicates that the modified Clustering is preferred.
-	 */
-	public double evaluate (Neighbor neighbor);
+  /**
+   *
+   * @param neighbor
+   * @return A higher score indicates that the modified Clustering is preferred.
+   */
+  public double evaluate (Neighbor neighbor);
 
-	/**
-	 *
-	 * @param neighbors
-	 * @return One score per neighbor. A higher score indicates that the
-	 * modified Clustering is preferred.
-	 *
-	 */
-	public double[] evaluate (Neighbor[] neighbors);
+  /**
+   *
+   * @param neighbors
+   * @return One score per neighbor. A higher score indicates that the
+   * modified Clustering is preferred.
+   *
+   */
+  public double[] evaluate (Neighbor[] neighbors);
 
-	/**
-	 * Reset the state of the evaluator.
-	 */
-	public void reset ();
-		
+  /**
+   * Reset the state of the evaluator.
+   */
+  public void reset ();
+    
 }

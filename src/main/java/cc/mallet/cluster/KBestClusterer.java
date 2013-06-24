@@ -9,11 +9,11 @@ import cc.mallet.types.InstanceList;
  *
  */
 public abstract class KBestClusterer extends Clusterer {
-	
-	public KBestClusterer(Pipe instancePipe) {
-		super(instancePipe);
-	}
+  
+  public KBestClusterer(Pipe instancePipe) {
+    super(instancePipe);
+  }
 
-	public abstract Clustering[] clusterKBest(InstanceList trainingSet, int k);
-	
+  public abstract Clustering[] clusterKBest(InstanceList trainingSet, int k);
+  
 }

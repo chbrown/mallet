@@ -25,23 +25,23 @@ SUPERVISED CLUSTERING
 
 (2) Parse training data
 
-	$ java cc.mallet.cluster.tui.Text2Clusterings --input data --output text.clusterings
+  $ java cc.mallet.cluster.tui.Text2Clusterings --input data --output text.clusterings
 
-	This will convert the data files into a Clusterings object serialized to text.clusterings
+  This will convert the data files into a Clusterings object serialized to text.clusterings
 
-	
+  
 (3) Optional: Print statistics about the Clusterings
 
-	$ java cc.mallet.cluster.tui.Clusterings2Info --input text.clusterings --print
+  $ java cc.mallet.cluster.tui.Clusterings2Info --input text.clusterings --print
 
-	This will print statistics as well as the data read in step (2).
+  This will print statistics as well as the data read in step (2).
 
-	
+  
 (4) Split into training and testing sets.
 
-	$ java cc.mallet.cluster.tui.Clusterings2Clusterings --input text.clusterings --training-proportion 0.5 --output text.clusterings
+  $ java cc.mallet.cluster.tui.Clusterings2Clusterings --input text.clusterings --training-proportion 0.5 --output text.clusterings
 
-	This will split the data into 50% training 50% testing (split by cluster). The output will be in text.clusterings.train and text.clusterings.test
+  This will split the data into 50% training 50% testing (split by cluster). The output will be in text.clusterings.train and text.clusterings.test
 
 
 (5) Train and test

@@ -47,28 +47,28 @@ public class MaxEntPRTrainer extends ClassifierTrainer<MaxEnt> implements Classi
   private double qGPV;
   private String constraintsFile;
 
-	private boolean converged = false;
-	private int numIterations = 0;
-	private double tolerance = 0.001;
-	private double pGPV;
-	private ArrayList<MaxEntPRConstraint> constraints;
-	private MaxEnt p;
-	private PRAuxClassifier q;
+  private boolean converged = false;
+  private int numIterations = 0;
+  private double tolerance = 0.001;
+  private double pGPV;
+  private ArrayList<MaxEntPRConstraint> constraints;
+  private MaxEnt p;
+  private PRAuxClassifier q;
   
-	public MaxEntPRTrainer() {}
-	
-	public MaxEntPRTrainer(ArrayList<MaxEntPRConstraint> constraints) {
-	  this.constraints = constraints;
-	}
-	
-	public void setPGaussianPriorVariance(double pGPV) {
-	  this.pGPV = pGPV;
-	}
-	
-	public void setQGaussianPriorVariance(double qGPV) {
-	  this.qGPV = qGPV;
-	}
-	
+  public MaxEntPRTrainer() {}
+  
+  public MaxEntPRTrainer(ArrayList<MaxEntPRConstraint> constraints) {
+    this.constraints = constraints;
+  }
+  
+  public void setPGaussianPriorVariance(double pGPV) {
+    this.pGPV = pGPV;
+  }
+  
+  public void setQGaussianPriorVariance(double qGPV) {
+    this.qGPV = qGPV;
+  }
+  
   public void setConstraintsFile(String filename) {
     this.constraintsFile = filename;
   }
@@ -111,7 +111,7 @@ public class MaxEntPRTrainer extends ClassifierTrainer<MaxEnt> implements Classi
   public MaxEnt train(InstanceList trainingSet) {
     return train(trainingSet,maxIterations);
   }
-	
+  
   public MaxEnt train(InstanceList trainingSet, int maxIterations) {
     return train(trainingSet,Math.min(maxIterations,minIterations),maxIterations);
   }
@@ -153,7 +153,7 @@ public class MaxEntPRTrainer extends ClassifierTrainer<MaxEnt> implements Classi
     // setup model
     int numParameters = (numFeatures + 1) * unlabeled.getTargetAlphabet().size();
     if (p == null) {
-    	p = new MaxEnt(unlabeled.getPipe(),new double[numParameters]);
+      p = new MaxEnt(unlabeled.getPipe(),new double[numParameters]);
     }
 
     // setup aux model
@@ -170,7 +170,7 @@ public class MaxEntPRTrainer extends ClassifierTrainer<MaxEnt> implements Classi
       if (numIterations >= (minIterations-1) && 2.0*Math.abs(value-oldValue) <= tolerance *
           (Math.abs(value)+Math.abs(oldValue) + 1e-5)){
         logger.info("PR value difference below tolerance (oldValue: " + oldValue + " newValue: " + value + ")");
-      	converged = true;
+        converged = true;
         break;
       }
       oldValue = value;

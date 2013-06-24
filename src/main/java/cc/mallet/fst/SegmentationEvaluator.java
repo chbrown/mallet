@@ -26,46 +26,46 @@ import cc.mallet.util.MalletLogger;
 
 public class SegmentationEvaluator extends TransducerEvaluator
 {
-	private static Logger logger = MalletLogger.getLogger(SegmentationEvaluator.class.getName());
+  private static Logger logger = MalletLogger.getLogger(SegmentationEvaluator.class.getName());
 
-	// equals() is called on these objects to determine if this token is the start (end) of a segment
-	// "segmentEndTag" should return "true" for the token *after* the end of the segment (i.e. that token
-	// is not part of the segment).
-	static Pattern startRegex = Pattern.compile ("^B.*");
-	//static Pattern endRegex = Pattern.compile ("^O.*");
-	Object segmentStartTag = new Object () { public boolean equals (Object o) { return startRegex.matcher(o.toString()).matches(); } };
-	Object segmentEndTag = new Object () { public boolean equals (Object o) { return false; } };
-			
-	public SegmentationEvaluator (InstanceList[] instanceLists, String[] descriptions) {
-		super (instanceLists, descriptions);
-	}
-	
-	public SegmentationEvaluator (InstanceList instanceList1, String description1) {
-		this (new InstanceList[] {instanceList1}, new String[] {description1});
-	}
+  // equals() is called on these objects to determine if this token is the start (end) of a segment
+  // "segmentEndTag" should return "true" for the token *after* the end of the segment (i.e. that token
+  // is not part of the segment).
+  static Pattern startRegex = Pattern.compile ("^B.*");
+  //static Pattern endRegex = Pattern.compile ("^O.*");
+  Object segmentStartTag = new Object () { public boolean equals (Object o) { return startRegex.matcher(o.toString()).matches(); } };
+  Object segmentEndTag = new Object () { public boolean equals (Object o) { return false; } };
+      
+  public SegmentationEvaluator (InstanceList[] instanceLists, String[] descriptions) {
+    super (instanceLists, descriptions);
+  }
+  
+  public SegmentationEvaluator (InstanceList instanceList1, String description1) {
+    this (new InstanceList[] {instanceList1}, new String[] {description1});
+  }
 
-	public SegmentationEvaluator (InstanceList instanceList1, String description1,
-			InstanceList instanceList2, String description2) {
-		this (new InstanceList[] {instanceList1, instanceList2}, new String[] {description1, description2});
-	}
+  public SegmentationEvaluator (InstanceList instanceList1, String description1,
+      InstanceList instanceList2, String description2) {
+    this (new InstanceList[] {instanceList1, instanceList2}, new String[] {description1, description2});
+  }
 
-	public SegmentationEvaluator (InstanceList instanceList1, String description1,
-			InstanceList instanceList2, String description2,
-			InstanceList instanceList3, String description3) {
-		this (new InstanceList[] {instanceList1, instanceList2, instanceList3}, new String[] {description1, description2, description3});
-	}
+  public SegmentationEvaluator (InstanceList instanceList1, String description1,
+      InstanceList instanceList2, String description2,
+      InstanceList instanceList3, String description3) {
+    this (new InstanceList[] {instanceList1, instanceList2, instanceList3}, new String[] {description1, description2, description3});
+  }
 
-	public SegmentationEvaluator setSegmentStartTag (Object o) { this.segmentStartTag = o; return this; }
-	public SegmentationEvaluator setSegmentEndTag (Object o) { this.segmentEndTag = o; return this; }
+  public SegmentationEvaluator setSegmentStartTag (Object o) { this.segmentStartTag = o; return this; }
+  public SegmentationEvaluator setSegmentEndTag (Object o) { this.segmentEndTag = o; return this; }
 
   public void evaluateInstanceList (TransducerTrainer tt, InstanceList data, String description)
   {
-  	Transducer model = tt.getTransducer();
-		int numCorrectTokens, totalTokens;
-		int numTrueSegments, numPredictedSegments, numCorrectSegments;
-		int numCorrectSegmentsInAlphabet, numCorrectSegmentsOOV;
-		int numIncorrectSegmentsInAlphabet, numIncorrectSegmentsOOV;
-		TokenSequence sourceTokenSequence = null;
+    Transducer model = tt.getTransducer();
+    int numCorrectTokens, totalTokens;
+    int numTrueSegments, numPredictedSegments, numCorrectSegments;
+    int numCorrectSegmentsInAlphabet, numCorrectSegmentsOOV;
+    int numIncorrectSegmentsInAlphabet, numIncorrectSegmentsOOV;
+    TokenSequence sourceTokenSequence = null;
 
     totalTokens = numCorrectTokens = 0;
     numTrueSegments = numPredictedSegments = numCorrectSegments = 0;

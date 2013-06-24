@@ -24,8 +24,8 @@ import cc.mallet.util.MalletLogger;
 
 public class Vectors2FeatureConstraints {
 
-	private static Logger logger = MalletLogger.getLogger(Vectors2FeatureConstraints.class.getName());
-	
+  private static Logger logger = MalletLogger.getLogger(Vectors2FeatureConstraints.class.getName());
+  
   public static CommandOption.File vectorsFile = new 
     CommandOption.File(Vectors2FeatureConstraints.class, "input", "FILENAME",
     true, null, "Data file used to generate constraints.", null);
@@ -69,9 +69,9 @@ public class Vectors2FeatureConstraints {
     // if a features file was specified, then load features from the file
     if (featuresFile.wasInvoked()) {
       if (fileContainsLabels(featuresFile.value)) {
-      	// better error message from dfrankow@gmail.com
+        // better error message from dfrankow@gmail.com
         if (targets.value.equals("oracle")) {
-      	  throw new RuntimeException("with --targets oracle, features file must be unlabeled");
+          throw new RuntimeException("with --targets oracle, features file must be unlabeled");
         }
         featuresAndLabels = readFeaturesAndLabelsFromFile(featuresFile.value, list.getDataAlphabet(), list.getTargetAlphabet());
       }
@@ -190,10 +190,10 @@ public class Vectors2FeatureConstraints {
         line = line.trim();
         String[] split = line.split("\\s+");
         int featureIndex = dataAlphabet.lookupIndex(split[0],false);
-      	// better error message from dfrankow@gmail.com
+        // better error message from dfrankow@gmail.com
         if (featureIndex == -1) {
-        	throw new RuntimeException("Couldn't find feature '"
-        	  + split[0] + "' in the data alphabet.");
+          throw new RuntimeException("Couldn't find feature '"
+            + split[0] + "' in the data alphabet.");
         }
         
         ArrayList<Integer> labels = new ArrayList<Integer>();

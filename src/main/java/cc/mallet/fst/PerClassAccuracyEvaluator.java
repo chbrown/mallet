@@ -26,20 +26,20 @@ public class PerClassAccuracyEvaluator extends TransducerEvaluator {
   private static Logger logger = MalletLogger.getLogger(TokenAccuracyEvaluator.class.getName());
 
   public PerClassAccuracyEvaluator (InstanceList[] instanceLists, String[] descriptions) {
-		super (instanceLists, descriptions);
-	}
-	
+    super (instanceLists, descriptions);
+  }
+  
   public PerClassAccuracyEvaluator (InstanceList i1, String d1) {
-  	this (new InstanceList[] {i1}, new String[] {d1});
+    this (new InstanceList[] {i1}, new String[] {d1});
   }
 
   public PerClassAccuracyEvaluator (InstanceList i1, String d1, InstanceList i2, String d2) {
-  	this (new InstanceList[] {i1, i2}, new String[] {d1, d2});
+    this (new InstanceList[] {i1, i2}, new String[] {d1, d2});
   }
 
   public void evaluateInstanceList (TransducerTrainer tt, InstanceList data, String description)
   {
-  	Transducer model = tt.getTransducer();
+    Transducer model = tt.getTransducer();
     Alphabet dict = model.getInputPipe().getTargetAlphabet();
     int numLabels = dict.size();
     int[] numCorrectTokens = new int [numLabels];

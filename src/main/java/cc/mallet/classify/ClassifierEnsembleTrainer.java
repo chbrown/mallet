@@ -15,8 +15,8 @@ import cc.mallet.types.InstanceList;
 public class ClassifierEnsembleTrainer extends ClassifierTrainer<ClassifierEnsemble>
 {
   Classifier[] classifiers;
-	ClassifierEnsemble classifier;
-	public ClassifierEnsemble getClassifier () { return classifier; }
+  ClassifierEnsemble classifier;
+  public ClassifierEnsemble getClassifier () { return classifier; }
 
   public ClassifierEnsembleTrainer (Classifier[] classifiers)
   {
@@ -28,6 +28,6 @@ public class ClassifierEnsembleTrainer extends ClassifierTrainer<ClassifierEnsem
     //if (initialClassifier != null) throw new IllegalArgumentException("initialClassifier not yet supported");
     // Make an instance list, with features being the outputs of the ensemble classifiers
     //return null;
-  	throw new IllegalStateException ("Not yet implemented.");
+    throw new IllegalStateException ("Not yet implemented.");
   }
 }

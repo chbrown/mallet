@@ -13,12 +13,12 @@ import cc.mallet.pipe.*;
 import cc.mallet.types.*;
 
 /**
-	 AdaBoost
+   AdaBoost
 
-	 Robert E. Schapire.
-	 "The boosting approach to machine learning: An overview."
-	 In MSRI Workshop on Nonlinear Estimation and Classification, 2002. 
-	 http://www.research.att.com/~schapire/cgi-bin/uncompress-papers/msri.ps
+   Robert E. Schapire.
+   "The boosting approach to machine learning: An overview."
+   In MSRI Workshop on Nonlinear Estimation and Classification, 2002. 
+   http://www.research.att.com/~schapire/cgi-bin/uncompress-papers/msri.ps
 
    @author Andrew McCallum <a href="mailto:mccallum@cs.umass.edu">mccallum@cs.umass.edu</a>
  */
@@ -56,8 +56,8 @@ public class AdaBoost extends Classifier
     public AdaBoost getTrimmedClassifier(int numWeakClassifiersToUse)
     {
         if (numWeakClassifiersToUse <= 0 || numWeakClassifiersToUse > weakClassifiers.length)
-	  throw new IllegalArgumentException("number of weak learners to use out of range:" 
-				       + numWeakClassifiersToUse);
+    throw new IllegalArgumentException("number of weak learners to use out of range:" 
+               + numWeakClassifiersToUse);
 
         Classifier[] newWeakClassifiers = new Classifier[numWeakClassifiersToUse];
         System.arraycopy(weakClassifiers, 0, newWeakClassifiers, 0, numWeakClassifiersToUse);
@@ -78,27 +78,27 @@ public class AdaBoost extends Classifier
      */
     public Classification classify (Instance inst, int numWeakClassifiersToUse)
     {
-    	if (numWeakClassifiersToUse <= 0 || numWeakClassifiersToUse > weakClassifiers.length)
-    		throw new IllegalArgumentException("number of weak learners to use out of range:" 
-    				+ numWeakClassifiersToUse);
+      if (numWeakClassifiersToUse <= 0 || numWeakClassifiersToUse > weakClassifiers.length)
+        throw new IllegalArgumentException("number of weak learners to use out of range:" 
+            + numWeakClassifiersToUse);
 
-    	FeatureVector fv = (FeatureVector) inst.getData();
-    	assert (instancePipe == null || fv.getAlphabet () == this.instancePipe.getDataAlphabet ());
-    	
-    	int numClasses = getLabelAlphabet().size();
-    	double[] scores = new double[numClasses];
-    	int bestIndex;
-    	double sum = 0;
-    	// Gather scores of all weakClassifiers
-    	for (int round = 0; round < numWeakClassifiersToUse; round++) {
-    		bestIndex = weakClassifiers[round].classify(inst).getLabeling().getBestIndex();
-    		scores[bestIndex] += alphas[round];
-    		sum += scores[bestIndex];
-    	}
-    	// Normalize the scores
-    	for (int i = 0; i < scores.length; i++)
-    		scores[i] /= sum;
-    	return new Classification (inst, this, new LabelVector (getLabelAlphabet(), scores));
+      FeatureVector fv = (FeatureVector) inst.getData();
+      assert (instancePipe == null || fv.getAlphabet () == this.instancePipe.getDataAlphabet ());
+      
+      int numClasses = getLabelAlphabet().size();
+      double[] scores = new double[numClasses];
+      int bestIndex;
+      double sum = 0;
+      // Gather scores of all weakClassifiers
+      for (int round = 0; round < numWeakClassifiersToUse; round++) {
+        bestIndex = weakClassifiers[round].classify(inst).getLabeling().getBestIndex();
+        scores[bestIndex] += alphas[round];
+        sum += scores[bestIndex];
+      }
+      // Normalize the scores
+      for (int i = 0; i < scores.length; i++)
+        scores[i] /= sum;
+      return new Classification (inst, this, new LabelVector (getLabelAlphabet(), scores));
     }
 
 }

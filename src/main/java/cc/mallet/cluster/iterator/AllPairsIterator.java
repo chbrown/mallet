@@ -15,40 +15,40 @@ import cc.mallet.types.InstanceList;
  * @see NeighborIterator
  */
 public class AllPairsIterator extends NeighborIterator {
-	int i;
-	int j;
-	InstanceList instances;
-	
-	/**
-	 *
-	 * @param clustering True Clustering.
-	 * @return
-	 */
-	public AllPairsIterator (Clustering clustering) {
-		super(clustering);
-		i = 0;
-		j = 1;
-		this.instances = clustering.getInstances();
-	}
+  int i;
+  int j;
+  InstanceList instances;
+  
+  /**
+   *
+   * @param clustering True Clustering.
+   * @return
+   */
+  public AllPairsIterator (Clustering clustering) {
+    super(clustering);
+    i = 0;
+    j = 1;
+    this.instances = clustering.getInstances();
+  }
 
-	public boolean hasNext () {
-		return i < instances.size() - 1;
-	}
+  public boolean hasNext () {
+    return i < instances.size() - 1;
+  }
 
-	public Instance next () {
-		AgglomerativeNeighbor neighbor =
-			new AgglomerativeNeighbor(clustering,
-																ClusterUtils.copyAndMergeInstances(clustering,
-																																	 i, j),
-																i, j);
-		// Increment.
-		if (j + 1 == instances.size()) {
-			i++;
-			j = i + 1;
-		} else {
-			j++;
-		}
-		return new Instance(neighbor, null, null, null);
-	}
+  public Instance next () {
+    AgglomerativeNeighbor neighbor =
+      new AgglomerativeNeighbor(clustering,
+                                ClusterUtils.copyAndMergeInstances(clustering,
+                                                                   i, j),
+                                i, j);
+    // Increment.
+    if (j + 1 == instances.size()) {
+      i++;
+      j = i + 1;
+    } else {
+      j++;
+    }
+    return new Instance(neighbor, null, null, null);
+  }
 }
 

@@ -50,8 +50,8 @@ public class LabelDistributionEvaluator extends TransducerEvaluator {
       }
     }
 
-	NumberFormat formatter = NumberFormat.getInstance();
-	formatter.setMaximumFractionDigits(4);
+  NumberFormat formatter = NumberFormat.getInstance();
+  formatter.setMaximumFractionDigits(4);
 
     for (int li = 0; li < predCounts.length; li++) {
       double ppred = predCounts[li] / total;

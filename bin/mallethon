@@ -31,11 +31,11 @@ if ! [[ -e $PYCACHE ]] ;
 then
     if ! mkdir -p $PYCACHE ;
     then 
-	echo "Failed to create a chache directory for mallethon:"
-	echo "please edit this script to set:"
+  echo "Failed to create a chache directory for mallethon:"
+  echo "please edit this script to set:"
         echo "PYCACHE=$PYCACHE"
-	echo "to something else"
-	exit
+  echo "to something else"
+  exit
     fi
 fi
 

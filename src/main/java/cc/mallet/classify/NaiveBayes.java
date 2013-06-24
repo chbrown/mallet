@@ -102,11 +102,11 @@ public class NaiveBayes extends Classifier implements Serializable
   }
   
   public Multinomial.Logged[] getMultinomials() {
-	  return p;
+    return p;
   }
   
   public Logged getPriors() {
-	return prior;
+  return prior;
   }
 
   public void printWords (int numToPrint)

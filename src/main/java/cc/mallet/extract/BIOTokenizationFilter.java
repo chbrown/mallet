@@ -114,15 +114,15 @@ public class BIOTokenizationFilter implements TokenizationFilter, Serializable {
   
   private void writeObject (ObjectOutputStream out) throws IOException
   {
-	  out.defaultWriteObject ();
-	  out.writeInt (CURRENT_SERIAL_VERSION);
+    out.defaultWriteObject ();
+    out.writeInt (CURRENT_SERIAL_VERSION);
   }
   
   
   private void readObject (ObjectInputStream in) throws IOException, ClassNotFoundException
   {
-	  in.defaultReadObject ();
-	  in.readInt (); // read version
+    in.defaultReadObject ();
+    in.readInt (); // read version
   }
 
 }

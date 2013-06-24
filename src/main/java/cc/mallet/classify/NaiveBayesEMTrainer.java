@@ -25,7 +25,7 @@ import cc.mallet.util.MalletLogger;
  */
 public class NaiveBayesEMTrainer extends ClassifierTrainer<NaiveBayes> {
 
-	private static Logger logger = MalletLogger.getLogger(MCMaxEntTrainer.class.getName());
+  private static Logger logger = MalletLogger.getLogger(MCMaxEntTrainer.class.getName());
 
   Multinomial.Estimator featureEstimator = new Multinomial.LaplaceEstimator();
   Multinomial.Estimator priorEstimator = new Multinomial.LaplaceEstimator();
@@ -44,7 +44,7 @@ public class NaiveBayesEMTrainer extends ClassifierTrainer<NaiveBayes> {
   }
 
   public Multinomial.Estimator getFeatureMultinomialEstimator () {
-  		return featureEstimator;
+      return featureEstimator;
   }
 
   public void setFeatureMultinomialEstimator (Multinomial.Estimator me) {
@@ -62,26 +62,26 @@ public class NaiveBayesEMTrainer extends ClassifierTrainer<NaiveBayes> {
   }
 
   public void setDocLengthNormalization (double d) {
-  	docLengthNormalization = d;
-  	nbTrainer.setDocLengthNormalization(docLengthNormalization);
+    docLengthNormalization = d;
+    nbTrainer.setDocLengthNormalization(docLengthNormalization);
   }
   
   public double getDocLengthNormalization () {
-  	return docLengthNormalization;
+    return docLengthNormalization;
   }
   
-	public double getUnlabeledDataWeight () {
-		return unlabeledDataWeight;
-	}
+  public double getUnlabeledDataWeight () {
+    return unlabeledDataWeight;
+  }
 
-	public void setUnlabeledDataWeight (double unlabeledDataWeight) {
-		this.unlabeledDataWeight = unlabeledDataWeight;
-	}
-	
-	public int getIteration() { return iteration; }
-	public boolean isFinishedTraining() { return false; }
-	public NaiveBayes getClassifier() { return classifier; }
-	
+  public void setUnlabeledDataWeight (double unlabeledDataWeight) {
+    this.unlabeledDataWeight = unlabeledDataWeight;
+  }
+  
+  public int getIteration() { return iteration; }
+  public boolean isFinishedTraining() { return false; }
+  public NaiveBayes getClassifier() { return classifier; }
+  
 
   public NaiveBayes train (InstanceList trainingSet)
   {
@@ -121,9 +121,9 @@ public class NaiveBayesEMTrainer extends ClassifierTrainer<NaiveBayes> {
 
   public String toString()
   {
-  	String ret = "NaiveBayesEMTrainer";
-  	if (docLengthNormalization != 1.0) ret += ",docLengthNormalization="+docLengthNormalization;
-  	if (unlabeledDataWeight != 1.0) ret += ",unlabeledDataWeight="+unlabeledDataWeight;
+    String ret = "NaiveBayesEMTrainer";
+    if (docLengthNormalization != 1.0) ret += ",docLengthNormalization="+docLengthNormalization;
+    if (unlabeledDataWeight != 1.0) ret += ",unlabeledDataWeight="+unlabeledDataWeight;
     return ret;
   }
 

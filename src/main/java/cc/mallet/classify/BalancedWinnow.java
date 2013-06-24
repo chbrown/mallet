@@ -29,7 +29,7 @@ import cc.mallet.types.MatrixOps;
 public class BalancedWinnow extends Classifier implements Serializable
 {
     double [][] m_weights;
-	
+  
     /**
      * Passes along data pipe and weights from 
      * {@link #BalancedWinnowTrainer BalancedWinnowTrainer}
@@ -41,10 +41,10 @@ public class BalancedWinnow extends Classifier implements Serializable
         super (dataPipe);
         m_weights = new double[weights.length][weights[0].length];
         for (int i = 0; i < weights.length; i++)
-			for (int j = 0; j < weights[0].length; j++)
-				m_weights[i][j] = weights[i][j];
+      for (int j = 0; j < weights[0].length; j++)
+        m_weights[i][j] = weights[i][j];
     }
-	
+  
     /**
      * @return a copy of the weight vectors
      */
@@ -53,10 +53,10 @@ public class BalancedWinnow extends Classifier implements Serializable
         int numCols = m_weights[0].length;
         double[][] ret = new double[m_weights.length][numCols];
         for (int i = 0; i < ret.length; i++)
-			System.arraycopy(m_weights[i], 0, ret[i], 0, numCols);
+      System.arraycopy(m_weights[i], 0, ret[i], 0, numCols);
         return ret;
     }
-	
+  
     /**
      * Classifies an instance using BalancedWinnow's weights
      *
@@ -86,17 +86,17 @@ public class BalancedWinnow extends Classifier implements Serializable
         // Take dot products
         double sum = 0;
         for (int ci = 0; ci < numClasses; ci++) {
-			for (int fvi = 0; fvi < fvisize; fvi++) {
-				int fi = fv.indexAtLocation (fvi);
-				double vi = fv.valueAtLocation(fvi);
+      for (int fvi = 0; fvi < fvisize; fvi++) {
+        int fi = fv.indexAtLocation (fvi);
+        double vi = fv.valueAtLocation(fvi);
 
-				if ( m_weights[ci].length > fi ) {
-				scores[ci] += vi * m_weights[ci][fi];
-				sum += vi * m_weights[ci][fi];
-				}
-			}
-			scores[ci] += m_weights[ci][numFeats];
-			sum += m_weights[ci][numFeats];
+        if ( m_weights[ci].length > fi ) {
+        scores[ci] += vi * m_weights[ci][fi];
+        sum += vi * m_weights[ci][fi];
+        }
+      }
+      scores[ci] += m_weights[ci][numFeats];
+      sum += m_weights[ci][numFeats];
         }
         MatrixOps.timesEquals(scores, 1.0 / sum);
 
@@ -124,9 +124,9 @@ public class BalancedWinnow extends Classifier implements Serializable
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         int version = in.readInt();
         if (version != CURRENT_SERIAL_VERSION)
-			throw new ClassNotFoundException("Mismatched BalancedWinnow versions: wanted " +
-											 CURRENT_SERIAL_VERSION + ", got " +
-											 version);
+      throw new ClassNotFoundException("Mismatched BalancedWinnow versions: wanted " +
+                       CURRENT_SERIAL_VERSION + ", got " +
+                       version);
         instancePipe = (Pipe) in.readObject();
         m_weights = (double[][]) in.readObject();
         

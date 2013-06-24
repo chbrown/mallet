@@ -9,5 +9,5 @@ import cc.mallet.cluster.Clustering;
  */
 public interface ClusteringScorer {
 
-	public double score (Clustering clustering);
+  public double score (Clustering clustering);
 }

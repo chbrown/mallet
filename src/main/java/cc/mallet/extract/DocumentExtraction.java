@@ -258,21 +258,21 @@ public class DocumentExtraction implements Serializable {
     return extractedSpans.size();
   }
   
-	// Serialization garbage
+  // Serialization garbage
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private static final int CURRENT_SERIAL_VERSION = 1;
+  private static final int CURRENT_SERIAL_VERSION = 1;
 
-	private void writeObject(ObjectOutputStream out) throws IOException {
-		out.defaultWriteObject();
-		out.writeInt(CURRENT_SERIAL_VERSION);
-	}
+  private void writeObject(ObjectOutputStream out) throws IOException {
+    out.defaultWriteObject();
+    out.writeInt(CURRENT_SERIAL_VERSION);
+  }
 
-	private void readObject(ObjectInputStream in) throws IOException,
-			ClassNotFoundException {
-		in.defaultReadObject();
-		in.readInt(); // read version
-	}
+  private void readObject(ObjectInputStream in) throws IOException,
+      ClassNotFoundException {
+    in.defaultReadObject();
+    in.readInt(); // read version
+  }
 
 }

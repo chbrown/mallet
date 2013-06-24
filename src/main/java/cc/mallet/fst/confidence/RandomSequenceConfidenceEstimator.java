@@ -6,7 +6,7 @@
    information, see the file `LICENSE' included with this distribution. */
 
 /** 
-		@author Aron Culotta <a href="mailto:culotta@cs.umass.edu">culotta@cs.umass.edu</a>
+    @author Aron Culotta <a href="mailto:culotta@cs.umass.edu">culotta@cs.umass.edu</a>
 */
 
 package cc.mallet.fst.confidence;
@@ -20,29 +20,29 @@ import cc.mallet.types.*;
 import cc.mallet.util.MalletLogger;
 
 /**
-	 Estimates the confidence of an entire sequence randomly.
+   Estimates the confidence of an entire sequence randomly.
  */
 public class RandomSequenceConfidenceEstimator extends TransducerSequenceConfidenceEstimator
 {
-	
-	java.util.Random generator;
+  
+  java.util.Random generator;
 
-	public RandomSequenceConfidenceEstimator (int seed, Transducer model) {
-		super(model);
-		generator = new Random (seed);
-	}
+  public RandomSequenceConfidenceEstimator (int seed, Transducer model) {
+    super(model);
+    generator = new Random (seed);
+  }
 
-	public RandomSequenceConfidenceEstimator (Transducer model) {
-		this (1, model);
-	}
+  public RandomSequenceConfidenceEstimator (Transducer model) {
+    this (1, model);
+  }
 
-	/**
-		 Calculates the confidence in the tagging of an {@link Instance}.
-	 */
-	public double estimateConfidenceFor (Instance instance,
-																			 Object[] startTags,
-																			 Object[] inTags) {
-		return generator.nextDouble();
-	}
+  /**
+     Calculates the confidence in the tagging of an {@link Instance}.
+   */
+  public double estimateConfidenceFor (Instance instance,
+                                       Object[] startTags,
+                                       Object[] inTags) {
+    return generator.nextDouble();
+  }
 }
 

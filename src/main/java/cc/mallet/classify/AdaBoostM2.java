@@ -26,9 +26,9 @@ import cc.mallet.types.*;
  */
 public class AdaBoostM2 extends Classifier implements Serializable
 {
-	private static final long serialVersionUID = 1L;
-	
-	Classifier[] weakClassifiers;
+  private static final long serialVersionUID = 1L;
+  
+  Classifier[] weakClassifiers;
     double[] alphas;
     
     public AdaBoostM2 (Pipe instancePipe, Classifier[] weakClassifiers, double[] alphas)
@@ -58,8 +58,8 @@ public class AdaBoostM2 extends Classifier implements Serializable
     public AdaBoostM2 getTrimmedClassifier(int numWeakClassifiersToUse)
     {
         if (numWeakClassifiersToUse <= 0 || numWeakClassifiersToUse > weakClassifiers.length)
-	  throw new IllegalArgumentException("number of weak learners to use out of range:" 
-				       + numWeakClassifiersToUse);
+    throw new IllegalArgumentException("number of weak learners to use out of range:" 
+               + numWeakClassifiersToUse);
 
         Classifier[] newWeakClassifiers = new Classifier[numWeakClassifiersToUse];
         System.arraycopy(weakClassifiers, 0, newWeakClassifiers, 0, numWeakClassifiersToUse);
@@ -80,27 +80,27 @@ public class AdaBoostM2 extends Classifier implements Serializable
      */
     public Classification classify (Instance inst, int numWeakClassifiersToUse)
     {
-    	if (numWeakClassifiersToUse <= 0 || numWeakClassifiersToUse > weakClassifiers.length)
-    		throw new IllegalArgumentException("number of weak learners to use out of range:" 
-    				+ numWeakClassifiersToUse);
+      if (numWeakClassifiersToUse <= 0 || numWeakClassifiersToUse > weakClassifiers.length)
+        throw new IllegalArgumentException("number of weak learners to use out of range:" 
+            + numWeakClassifiersToUse);
 
-    	FeatureVector fv = (FeatureVector) inst.getData();
-    	assert (instancePipe == null || fv.getAlphabet () == this.instancePipe.getDataAlphabet ());
-    	
-    	int numClasses = getLabelAlphabet().size();
-    	double[] scores = new double[numClasses];
-    	int bestIndex;
-    	double sum = 0;
-    	// Gather scores of all weakClassifiers
-    	for (int round = 0; round < numWeakClassifiersToUse; round++) {
-    		bestIndex = weakClassifiers[round].classify(inst).getLabeling().getBestIndex();
-    		scores[bestIndex] += alphas[round];
-    		sum += scores[bestIndex];
-    	}
-    	// Normalize the scores
-    	for (int i = 0; i < scores.length; i++)
-    		scores[i] /= sum;
-    	return new Classification (inst, this, new LabelVector (getLabelAlphabet(), scores));
+      FeatureVector fv = (FeatureVector) inst.getData();
+      assert (instancePipe == null || fv.getAlphabet () == this.instancePipe.getDataAlphabet ());
+      
+      int numClasses = getLabelAlphabet().size();
+      double[] scores = new double[numClasses];
+      int bestIndex;
+      double sum = 0;
+      // Gather scores of all weakClassifiers
+      for (int round = 0; round < numWeakClassifiersToUse; round++) {
+        bestIndex = weakClassifiers[round].classify(inst).getLabeling().getBestIndex();
+        scores[bestIndex] += alphas[round];
+        sum += scores[bestIndex];
+      }
+      // Normalize the scores
+      for (int i = 0; i < scores.length; i++)
+        scores[i] /= sum;
+      return new Classification (inst, this, new LabelVector (getLabelAlphabet(), scores));
     }
         
 }
